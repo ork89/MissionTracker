@@ -1,0 +1,19 @@
+.Task {    
+    width: 85%;
+    height: 80px;
+    float: right;
+    background-color: #FFF;
+    display: flex;
+    justify-content: space-between;    
+    box-shadow: 1px 1px 5px #A0A0A0;
+}
+
+.Timer {
+    width: 250px;
+    height: 100%;
+    margin: 0 0 0 10px;
+    display: flex;
+    font-size: 35px;
+    align-items: center;
+    justify-content: space-evenly;
+}
