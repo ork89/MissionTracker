@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Timer from '../../components/Timer/Timer';
 import TimerControls from '../../components/Timer/TimerControls/TimerControls';
-import TimerInfo from '../../components/Timer/TimerInfo/TimerInfo';
+import TaskDescription from '../../components/Timer/TaskDescription/TaskDescription';
 
 import classes from './Task.module.css';
 
@@ -55,7 +55,7 @@ const Task = () => {
 				timerPaused={timerPausedHandler}
 				timerStopped={timerStoppedHandler}
 				disabled={!isStarted} />
-			<TimerInfo />
+			<TaskDescription />
 		</div>
 	);
 };

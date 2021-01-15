@@ -6,7 +6,7 @@ const input = (props) => {
     let inputElement = null;
     const inputClasses = [classes.InputElement];
 
-    if(props.shouldValidate && props.touched && props.invalid) {
+    if(props.shouldValidate && props.edited && props.invalid) {
         inputClasses.push(classes.Invalid);
     }
 
@@ -47,7 +47,7 @@ const input = (props) => {
     }
     
     let validationError = null;
-    if(props.touched && props.invalid) {
+    if(props.edited && props.invalid) {
         let filedName = props.elementConfig.placeholder ?? '';
         validationError = <p className={classes.ErrorMsg}>The value in {filedName} is invalid</p>
     }

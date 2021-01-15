@@ -1,5 +1,42 @@
 .TaskItem {
     width: 100%;
-    height: 100%;
-    box-shadow: 1px 1px 5px #A0A0A0;
+    height: 100px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 1px #A0A0A0;
+}
+
+.project {
+    margin: 10px;
+    position: relative;
+    font-size: 16px;
+    color: #A0A0A0;
+    display: inline-flex;
+}
+
+.description {
+    position: relative;
+    padding: 0 20px;
+    font-size: 20px;
+    text-align: start;
+}
+
+.time {
+    padding-left: 20px;
+}
+
+.details {
+    display: inline-flex;
+}
+
+.date {
+    /* position: relative;
+    align-self: flex-start;
+    justify-items: flex-end; */
+    padding-left: 20px;
+}
+
+.priority {
+    padding-left: 20px;
 }

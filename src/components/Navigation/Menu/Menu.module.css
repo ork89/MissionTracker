@@ -1,9 +1,9 @@
 .Menu {
+    top: 0;
+    left: 0;
     width: 15%;
     height: 100vh;
     position: fixed;
-    top: 0;
-    left: 0;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
@@ -11,7 +11,7 @@
     padding: 0;
     box-sizing: border-box;
     background-color: #282C34;
-    z-index: 90;
+    /* z-index: 90; */
 }
 
 .Menu nav {

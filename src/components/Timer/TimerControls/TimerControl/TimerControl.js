@@ -1,24 +1,35 @@
 import React from 'react';
 
-import Button from '../../../UI/Button/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import IconButton from '@material-ui/core/IconButton';
+import SlideshowIcon from '@material-ui/icons/Slideshow';
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
+import PausePresentationIcon from '@material-ui/icons/PausePresentation';
 import classes from './TimerControl.module.css';
 
 const TimerControl = props => {
+	if (props.disabled) {
 		return (
 			<div className={classes.TimerControl}>
-                <Button btnType='Success' clicked={props.started}>
-                    <FontAwesomeIcon icon="play-circle" />
-				</Button>
-				<Button btnType='Caution' clicked={props.paused}>
-                    <FontAwesomeIcon icon="pause-circle" />
-				</Button>
-				<Button btnType='Warning' clicked={props.stopped} disabled={props.disabled}>
-                    <FontAwesomeIcon icon="stop-circle" />
-				</Button>
+				<IconButton onClick={props.started} color='primary'>
+					<SlideshowIcon fontSize='large' />
+				</IconButton>
 			</div>
 		);
-
+	} else {
+		return (
+			<div className={classes.TimerControl}>
+				<IconButton onClick={props.started} color='primary'>
+					<SlideshowIcon fontSize='large' />
+				</IconButton>
+				<IconButton onClick={props.paused}>
+					<PausePresentationIcon fontSize='large' />
+				</IconButton>
+				<IconButton onClick={props.stopped} color='secondary'>
+					<CancelPresentationIcon fontSize='large' />
+				</IconButton>
+			</div>
+		);
+	}
 };
 
 export default TimerControl;

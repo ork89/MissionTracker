@@ -5,8 +5,8 @@
     outline: none;
     cursor: pointer;
     font: inherit;
-    padding: 10px;
-    margin: 10px;
+    padding: 5px;
+    margin: 5px;
     font-weight: bold;
 }
 
@@ -20,16 +20,23 @@
     cursor: not-allowed;
 }
 
+/* Play button */
 .Success {
-    color: #7cc418;
+    /* color: #7cc418; */
+    color: #40A4C8;
+    font-size: 35px;
 }
 
+/* Stop button */
 .Warning {
     color: #eb3d1e;
+    font-size: 35px;
 }
 
+/* Pause button */
 .Caution {
     color: #FFCA2C;
+    font-size: 35px;
 }
 
 .Primary {
