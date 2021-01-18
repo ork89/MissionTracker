@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import TaskItem from '../../components/Timer/TaskItem/TaskItem';
-import Input from '../../components/UI/Input/Input';
+import TaskItem from '../../components/TaskItem/TaskItem';
 import classes from './TaskItemList.module.css';
 
 const TaskItemList = props => {

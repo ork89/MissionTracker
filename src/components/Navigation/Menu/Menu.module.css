@@ -1,26 +1,29 @@
 .Menu {
-    top: 0;
-    left: 0;
-    width: 15%;
-    height: 100vh;
-    position: fixed;
-    display: flex;
-    flex-flow: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #282C34;
-    /* z-index: 90; */
+	top: 0;
+	left: 0;
+	width: 15%;
+	height: 100vh;
+	position: fixed;
+	display: flex;
+	flex-flow: column;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0;
+	box-sizing: border-box;
+	background-color: #282c34;
+	/* z-index: 90; */
 }
 
 .Menu nav {
-    height: 100%;
-    width: 100%;
-    margin-top: 20px;
+	height: 100%;
+	width: 100%;
+	margin-top: 20px;
 }
 
 .logo {
-    height: 10%;
-    box-sizing: border-box;
+	height: 40px;
+	margin-top: 20px;
+	position: relative;
+	display: flex;
+	align-items: center;
 }

@@ -6,10 +6,18 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
 	root: {
-        '& .MuiTextField-root': {
-			margin: '10px 30px 0 0',
+		'& .MuiTextField-root': {
+			margin: '10px',
 			width: 400,
-			paddingRight: 30
+		},
+		'& .MuiInput-underline:before': {
+			border: 'none',
+		},
+		'& .MuiInput-underline:after': {
+			borderBottom: '2px solid #7cdfbf',
+		},
+		'& .MuiFormLabel-root.Mui-focused': {
+			color: '#7cdfbf',
 		},
 	},
 }));
@@ -20,7 +28,7 @@ const TaskDescription = props => {
 
 	return (
 		<div className={classes.root}>
-			<TextField id='taskDescription' label='Give your task a description' size='medium' />			
+			<TextField id='taskDescription' label='Give your task a description' size='medium' />
 		</div>
 	);
 };
