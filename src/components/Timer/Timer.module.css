@@ -1,12 +1,12 @@
 .Timer {
-    height: 100%;
-    width: 350px;
-    min-width: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+	height: 100%;
+	width: 200px;
+	min-width: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
 }
 
 .Timer .Clock {
-    margin: auto;
+	margin: auto;
 }

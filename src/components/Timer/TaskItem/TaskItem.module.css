@@ -1,48 +1,58 @@
 .TaskItem {
-    width: 100%;
-    height: 60px;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 0 1px #A0A0A0;
+	width: 100%;
+	height: 60px;
+	margin: 0;
+	padding: 0 10px;
+	display: flex;
+	align-items: center;
+	box-shadow: 0 0 1px #a0a0a0;
+	position: relative;
 }
 
 .project {
-    margin: 10px;
-    position: relative;
-    font-size: 16px;
-    color: #A0A0A0;
-    /* display: inline-flex; */
+	margin: 5px;
+	font-size: 16px;
+	color: #a0a0a0;
 }
 
 .description {
-    position: relative;
-    padding: 0 20px;
-    font-size: 20px;
-    text-align: start;
-}
-
-.time {
-    padding-left: 20px;
+	position: relative;
+	padding: 0 20px;
+	font-size: 20px;
+	text-align: start;
 }
 
 .details {
-    display: inline-flex;
+	flex: 0 0 auto;
+	min-width: 250px;
+	position: relative;
+	display: inline;
+}
+
+.container {
+	flex-flow: row;
+	justify-content: flex-start;
+	align-items: center;
+	display: inline-flex;
 }
 
 .date {
-    /* position: relative;
-    align-self: flex-start;
-    justify-items: flex-end; */
-    padding-left: 20px;
+	padding-left: 10px;
 }
 
 .priority {
-    padding-left: 20px;
+	position: relative;
+	display: flex;
+	flex: 0 2 auto;
+	justify-content: center;
+	margin-left: auto;
+	text-align: right;
+	padding-right: 20px;
+	overflow: hidden;
 }
 
 .controls {
-    margin-left: 20px;
-    justify-content: end;
-    color: #A0A0A0
+	margin: 0 20px 0 0;
+	justify-content: end;
+	color: #a0a0a0;
 }

@@ -1,8 +1,8 @@
 .TimerControls {
-    /* width: 80%; */
-    height: 100%;
-    display: flex;
-    flex-flow: row;
-    margin: auto;
-    justify-content: flex-end;
+	/* width: 80%; */
+	height: 100%;
+	display: flex;
+	flex-flow: row;
+	/* margin: auto; */
+	justify-content: flex-end;
 }

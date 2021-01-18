@@ -1,7 +1,7 @@
-.Task {        
-    height: 80px;
-    background-color: #FFF;
-    display: flex;    
-    justify-content: space-between;    
-    box-shadow: 1px 1px 5px #A0A0A0;
+.Task {
+	height: 80px;
+	background-color: #fff;
+	display: flex;
+	/* justify-content: space-between; */
+	box-shadow: 1px 1px 5px #a0a0a0;
 }
