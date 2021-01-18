@@ -8,7 +8,8 @@ const useStyles = makeStyles(theme => ({
 	root: {
         '& .MuiTextField-root': {
 			margin: '10px 30px 0 0',
-            width: 400,
+			width: 400,
+			paddingRight: 30
 		},
 	},
 }));
@@ -19,7 +20,7 @@ const TaskDescription = props => {
 
 	return (
 		<div className={classes.root}>
-			<TextField id='taskDescription' label='Give your task a description' size='large' />			
+			<TextField id='taskDescription' label='Give your task a description' size='medium' />			
 		</div>
 	);
 };
