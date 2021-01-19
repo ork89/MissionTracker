@@ -14,10 +14,11 @@ const useStyles = makeStyles(theme => ({
 			border: 'none',
 		},
 		'& .MuiInput-underline:after': {
-			borderBottom: '2px solid #7cdfbf',
+			borderBottom: '2px solid #7CDFBF',
 		},
 		'& .MuiFormLabel-root.Mui-focused': {
-			color: '#7cdfbf',
+			color: '#7CDFBF',
+			fontWeight: '400'
 		},
 	},
 }));
