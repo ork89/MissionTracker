@@ -1,40 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import moment from 'moment';
+import TimeDialog from '../UI/Dialog/TimeDialog';
+import DatePicker from '../UI/DatePicker/DatePicker';
+import SelectInput from '../UI/Input/SelectInput';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import DatePicker from '../UI/DatePicker/DatePicker';
-import TimePicker from '../UI/TimePicker/TimePicker';
-// import CustomTimePicker from '../UI/TimePicker/customTimePicker';
-
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+
 import classes from './TaskItem.module.css';
-
-const BootstrapInput = withStyles(theme => ({
-	root: {
-		'label + &': {
-			marginTop: theme.spacing(3),
-		},
-	},
-	input: {
-		borderBottom: '1px solid #ced4da',
-		position: 'relative',
-		backgroundColor: theme.palette.background.paper,
-		fontSize: 16,
-		padding: '10px 26px 10px 12px',
-		transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-		fontFamily: ['"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
-		'&:focus': {
-			borderColor: '#7CDFBF',
-			boxShadow: '0 0 0 0.2rem rgba(124, 223, 192, 0.253);',
-		},
-	},
-}))(InputBase);
 
 const useStyles = makeStyles(theme => ({
 	margin: {
@@ -46,10 +25,37 @@ const useStyles = makeStyles(theme => ({
 const TaskItem = props => {
 	const styles = useStyles();
 	const [priority, setPriority] = useState(props.priority);
-	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [anchorEl, setAnchorEl] = useState(null);
+	const [startTime, setStartTime] = useState(props.startTime);
+	const [endTime, setEndTime] = useState(props.endTime);
 
-	const handleChange = event => {
-		setPriority(event.target.value);
+	const { date } = props;
+	const [totalTime, setTotalTime] = useState(props.totalTime);
+
+	const getTimeDifference = useCallback((startFullDate, endFullDate) => {
+		const durationInHours = endFullDate.diff(startFullDate, 'hours');
+		const durationInMinutes = endFullDate.diff(startFullDate, 'minutes') % 60;
+		const durationInSeconds = endFullDate.diff(startFullDate, 'seconds') % 60;
+
+		let totalTimeArr = [durationInHours, durationInMinutes, durationInSeconds];
+		totalTimeArr.map(item => {
+			return padWithZero(item.toString());
+		});
+
+		setTotalTime(totalTimeArr.join(':'));
+	}, []);
+
+	useEffect(() => {
+		let startFullDate = moment(new Date(date.toString().replace('00:00:00', startTime)));
+		let endFullDate = moment(new Date(date.toString().replace('00:00:00', endTime)));
+
+		getTimeDifference(startFullDate, endFullDate);
+	}, [date, startTime, endTime, getTimeDifference]);
+
+	const padWithZero = time => {
+		if (time.length < 2) {
+			return time.padStart(2, '0').toString();
+		}
 	};
 
 	const handleClick = event => {
@@ -60,6 +66,19 @@ const TaskItem = props => {
 		setAnchorEl(null);
 	};
 
+	const handleDelete = id => {
+		props.deleteItem(id);
+		setAnchorEl(null);
+	};
+
+	const updateStartTime = (minutes, hours, seconds) => {
+		setStartTime(hours + ':' + minutes + ':' + seconds);
+	};
+
+	const updateEndTime = (minutes, hours, seconds) => {
+		setEndTime(hours + ':' + minutes + ':' + seconds);
+	};
+
 	return (
 		<div className={classes.TaskItem}>
 			<DoubleArrowIcon style={{ fontSize: 12, color: '#A0A0A0' }} />
@@ -67,17 +86,12 @@ const TaskItem = props => {
 			<div className={classes.description}>
 				<InputBase className={styles.margin} defaultValue={props.description} inputProps={{ 'aria-label': 'naked' }} />
 			</div>
-			<Select id='priority-select' value={priority} onChange={handleChange} input={<BootstrapInput />}>
-				<MenuItem value='noneIssue'>Non Issue</MenuItem>
-				<MenuItem value='low'>Low</MenuItem>
-				<MenuItem value='medium'>Medium</MenuItem>
-				<MenuItem value='high'>High</MenuItem>
-			</Select>
+			<SelectInput priority={priority} />
 			<div className={classes.details}>
 				<div className={classes.container}>
-					<TimePicker label='startTime' time={props.startTime} />
-					<TimePicker label='endTime' time={props.endTime} />
-					<p className={classes.time}>{props.totalTime}</p>
+					<TimeDialog dialogTitle='Start Time' textFieldLabel='Start time' textFieldType='text' btnOpenLabel={startTime} value={startTime} setTime={updateStartTime} />
+					<TimeDialog dialogTitle='End Time' textFieldLabel='End time' textFieldType='text' btnOpenLabel={endTime} value={endTime} setTime={updateEndTime} />
+					<p className={classes.time}>{totalTime}</p>
 					<DatePicker date={props.date} />
 				</div>
 			</div>
@@ -88,7 +102,7 @@ const TaskItem = props => {
 
 				<Menu id='options-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
 					<MenuItem onClick={handleClose}>Duplicate to another project</MenuItem>
-					<MenuItem onClick={handleClose}>Delete</MenuItem>
+					<MenuItem onClick={handleDelete}>Delete</MenuItem>
 				</Menu>
 			</div>
 		</div>
