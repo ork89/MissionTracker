@@ -1,9 +1,10 @@
 import React from 'react';
 
 import IconButton from '@material-ui/core/IconButton';
-import SlideshowIcon from '@material-ui/icons/Slideshow';
-import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
-import PausePresentationIcon from '@material-ui/icons/PausePresentation';
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
+import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+
 import classes from './TimerControl.module.css';
 
 const TimerControl = props => {
@@ -11,7 +12,7 @@ const TimerControl = props => {
 		return (
 			<div className={classes.TimerControl}>
 				<IconButton onClick={props.started} color='primary'>
-					<SlideshowIcon fontSize='large' />
+					<PlayCircleOutlineIcon fontSize='large' />
 				</IconButton>
 			</div>
 		);
@@ -19,13 +20,13 @@ const TimerControl = props => {
 		return (
 			<div className={classes.TimerControl}>
 				<IconButton onClick={props.started} color='primary'>
-					<SlideshowIcon fontSize='large' />
+					<PlayCircleOutlineIcon fontSize='large' />
 				</IconButton>
 				<IconButton onClick={props.paused}>
-					<PausePresentationIcon fontSize='large' />
+					<PauseCircleOutlineIcon fontSize='large' />
 				</IconButton>
 				<IconButton onClick={props.stopped} color='secondary'>
-					<CancelPresentationIcon fontSize='large' />
+					<HighlightOffIcon fontSize='large' />
 				</IconButton>
 			</div>
 		);

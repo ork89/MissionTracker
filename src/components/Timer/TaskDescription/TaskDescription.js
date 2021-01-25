@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-// import classes from './TaskDescription.module.css';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -18,14 +17,13 @@ const useStyles = makeStyles(theme => ({
 		},
 		'& .MuiFormLabel-root.Mui-focused': {
 			color: '#7CDFBF',
-			fontWeight: '400'
+			fontWeight: '400',
 		},
 	},
 }));
 
 const TaskDescription = props => {
 	const classes = useStyles();
-	const [description, setDescription] = useState();
 
 	return (
 		<div className={classes.root}>
