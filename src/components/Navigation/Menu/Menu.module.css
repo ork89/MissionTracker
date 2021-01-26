@@ -1,9 +1,7 @@
 .Menu {
 	top: 0;
 	left: 0;
-	width: 15%;
 	height: 100vh;
-	position: fixed;
 	display: flex;
 	flex-flow: column;
 	justify-content: space-between;
@@ -11,7 +9,6 @@
 	padding: 0;
 	box-sizing: border-box;
 	background-color: #282c34;
-	/* z-index: 90; */
 }
 
 .Menu nav {
@@ -22,8 +19,25 @@
 
 .logo {
 	height: 40px;
+	width: 100%;
 	margin-top: 20px;
 	position: relative;
 	display: flex;
 	align-items: center;
+}
+
+@media screen and (max-width: 640px) {
+	.Menu .nav {
+		width: 30px;
+	}
+}
+
+@media (max-width: 499px) {
+	.Desktop {
+		display: none;
+	}
+
+	.logo {
+		display: none;
+	}
 }

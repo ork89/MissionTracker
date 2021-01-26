@@ -1,0 +1,9 @@
+.ProjectItem {
+	display: flex;
+	flex-direction: row;
+}
+
+.container {
+	align-items: center;
+	justify-content: space-between;
+}

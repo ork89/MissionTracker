@@ -1,10 +1,28 @@
 .Logo {
 	padding: 4px;
-	/* height: 100%; */
+	width: 100%;
 	box-sizing: border-box;
-	border-radius: 5px;
+}
+
+.ToggleLogo {
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .Logo img {
 	height: 100%;
+	width: inherit;
+}
+
+@media screen and (min-width: 640px) {
+	.ToggleLogo {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 639px) {
+	.Logo {
+		display: none;
+	}
 }

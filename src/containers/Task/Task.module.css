@@ -1,6 +1,22 @@
-.Task {
+.ActiveTask {
 	height: 80px;
+	width: 100%;
 	background-color: #fff;
 	display: flex;
 	box-shadow: 1px 1px 5px #a0a0a0;
+}
+
+.container {
+	display: flex;
+	flex-direction: row;
+}
+
+@media screen and (max-width: 640px) {
+	.container {
+		flex-direction: column;
+	}
+
+	.ActiveTask {
+		height: 160px;
+	}
 }
