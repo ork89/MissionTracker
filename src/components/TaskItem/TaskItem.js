@@ -4,9 +4,8 @@ import TimeDialog from '../UI/Dialog/TimeDialog';
 import DatePicker from '../UI/DatePicker/DatePicker';
 import SelectInput from '../UI/Input/SelectInput';
 
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
-import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -24,7 +23,6 @@ const useStyles = makeStyles(theme => ({
 
 const TaskItem = props => {
 	const styles = useStyles();
-	const [priority, setPriority] = useState(props.priority);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [startTime, setStartTime] = useState(props.startTime);
 	const [endTime, setEndTime] = useState(props.endTime);
@@ -81,16 +79,25 @@ const TaskItem = props => {
 
 	return (
 		<div className={classes.TaskItem}>
-			<DoubleArrowIcon style={{ fontSize: 12, color: '#A0A0A0' }} />
+			<DoubleArrowIcon style={{ fontSize: 12, color: '#A0A0A0', marginLeft: 10 }} />
 			<div className={classes.project}>{props.project}</div>
 			<div className={classes.description}>
 				<InputBase className={styles.margin} defaultValue={props.description} inputProps={{ 'aria-label': 'naked' }} />
 			</div>
-			<SelectInput priority={priority} />
+			<SelectInput priority={props.priority} />
 			<div className={classes.details}>
 				<div className={classes.container}>
-					<TimeDialog dialogTitle='Start Time' textFieldLabel='Start time' textFieldType='text' btnOpenLabel={startTime} value={startTime} setTime={updateStartTime} />
-					<TimeDialog dialogTitle='End Time' textFieldLabel='End time' textFieldType='text' btnOpenLabel={endTime} value={endTime} setTime={updateEndTime} />
+					<div className={classes.timeControlsContainer}>
+						<TimeDialog
+							dialogTitle='Start Time'
+							textFieldLabel='Start time'
+							textFieldType='text'
+							btnOpenLabel={startTime}
+							value={startTime}
+							setTime={updateStartTime}
+						/>
+						<TimeDialog dialogTitle='End Time' textFieldLabel='End time' textFieldType='text' btnOpenLabel={endTime} value={endTime} setTime={updateEndTime} />
+					</div>
 					<p className={classes.time}>{totalTime}</p>
 					<DatePicker date={props.date} />
 				</div>

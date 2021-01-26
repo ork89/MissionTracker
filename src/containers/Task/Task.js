@@ -28,7 +28,7 @@ const Task = () => {
 		setIsStarted(true);
 		console.log('Timer Started');
 
-		incrementor = setInterval(() => {			
+		incrementor = setInterval(() => {
 			setSecondsElapsed(secondsElapsed => secondsElapsed + 1);
 		}, 1000);
 	};
@@ -45,16 +45,11 @@ const Task = () => {
 	};
 
 	return (
-		<div className={classes.Task}>
-			<Timer
-				minutes={getMinutes()}
-				seconds={getSeconds()}
-				hours={getHours()} />
-			<TimerControls
-				timerStarted={timerStartedHandler}
-				timerPaused={timerPausedHandler}
-				timerStopped={timerStoppedHandler}
-				disabled={!isStarted} />
+		<div className={classes.ActiveTask}>
+			<div className={classes.container}>
+				<Timer minutes={getMinutes()} seconds={getSeconds()} hours={getHours()} />
+				<TimerControls timerStarted={timerStartedHandler} timerPaused={timerPausedHandler} timerStopped={timerStoppedHandler} disabled={!isStarted} />
+			</div>
 			<TaskDescription />
 		</div>
 	);

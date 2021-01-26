@@ -40,7 +40,7 @@ const TaskItemList = props => {
 	// const inputChangedHandler = (event, inputId) => {};
 
 	const handleDelete = id => {
-		const newTasksList = tasksList.filter(item => item.id != id);
+		const newTasksList = tasksList.filter(item => item.id !== id);
 		setTasksList(newTasksList);
 	};
 
