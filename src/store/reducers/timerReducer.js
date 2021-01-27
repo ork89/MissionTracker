@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from '../../shared/utility';
+import updateObject from '../../shared/utility';
 
 const initialState = {
 	started: null,
@@ -7,25 +7,25 @@ const initialState = {
 };
 
 const startTimer = (state, action) => {
-    console.log('TimerReducer[startTimer]: ', action.time);
-    console.log('TimerReducer[startTimer]: ', state.recordedTime);
+	console.log('TimerReducer[startTimer]: ', action.time);
+	console.log('TimerReducer[startTimer]: ', state.recordedTime);
 	return updateObject(state, {
-		started: action.time
+		started: action.time,
 	});
 };
 
 const pauseTimer = (state, action) => {
 	return updateObject(state, {
-        recordedTime: state.recordedTime + action.time - state.started,
-        started: null
-    });
+		recordedTime: state.recordedTime + action.time - state.started,
+		started: null,
+	});
 };
 
 const stopTimer = (state, action) => {
 	return updateObject(state, {
-        recordedTime: state.recordedTime + action.time - state.started,
-        started: null
-    });
+		recordedTime: state.recordedTime + action.time - state.started,
+		started: null,
+	});
 };
 
 // const tick = (state, action) => {
@@ -38,17 +38,17 @@ const stopTimer = (state, action) => {
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case actionTypes.START_TIMER:
-            return startTimer(state, action);
-            
+			return startTimer(state, action);
+
 		case actionTypes.PAUSE_TIMER:
-            return pauseTimer(state, action);
-            
+			return pauseTimer(state, action);
+
 		case actionTypes.STOP_TIMER:
-            return stopTimer(state, action);
-            
+			return stopTimer(state, action);
+
 		// case actionTypes.TICK:
-        //     return tick(state, action);
-            
+		//     return tick(state, action);
+
 		default:
 			return state;
 	}

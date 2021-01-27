@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -52,7 +52,9 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-	return order === 'desc' ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
+	return order === 'desc'
+		? (a, b) => descendingComparator(a, b, orderBy)
+		: (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function stableSort(array, comparator) {
@@ -74,7 +76,15 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-	const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+	const {
+		classes,
+		onSelectAllClick,
+		order,
+		orderBy,
+		numSelected,
+		rowCount,
+		onRequestSort,
+	} = props;
 	const createSortHandler = property => event => {
 		onRequestSort(event, property);
 	};
@@ -96,9 +106,16 @@ function EnhancedTableHead(props) {
 						align={headCell.numeric ? 'right' : 'left'}
 						padding={headCell.disablePadding ? 'none' : 'default'}
 						sortDirection={orderBy === headCell.id ? order : false}>
-						<TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'} onClick={createSortHandler(headCell.id)}>
+						<TableSortLabel
+							active={orderBy === headCell.id}
+							direction={orderBy === headCell.id ? order : 'asc'}
+							onClick={createSortHandler(headCell.id)}>
 							{headCell.label}
-							{orderBy === headCell.id ? <span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span> : null}
+							{orderBy === headCell.id ? (
+								<span className={classes.visuallyHidden}>
+									{order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+								</span>
+							) : null}
 						</TableSortLabel>
 					</TableCell>
 				))}
@@ -107,15 +124,15 @@ function EnhancedTableHead(props) {
 	);
 }
 
-EnhancedTableHead.propTypes = {
-	classes: PropTypes.object.isRequired,
-	numSelected: PropTypes.number.isRequired,
-	onRequestSort: PropTypes.func.isRequired,
-	onSelectAllClick: PropTypes.func.isRequired,
-	order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-	orderBy: PropTypes.string.isRequired,
-	rowCount: PropTypes.number.isRequired,
-};
+// EnhancedTableHead.propTypes = {
+// 	classes: PropTypes.object.isRequired,
+// 	numSelected: PropTypes.number.isRequired,
+// 	onRequestSort: PropTypes.func.isRequired,
+// 	onSelectAllClick: PropTypes.func.isRequired,
+// 	order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+// 	orderBy: PropTypes.string.isRequired,
+// 	rowCount: PropTypes.number.isRequired,
+// };
 
 const useToolbarStyles = makeStyles(theme => ({
 	root: {
@@ -147,7 +164,11 @@ const EnhancedTableToolbar = props => {
 				[classes.highlight]: numSelected > 0,
 			})}>
 			{numSelected > 0 ? (
-				<Typography className={classes.title} color='inherit' variant='subtitle1' component='div'>
+				<Typography
+					className={classes.title}
+					color='inherit'
+					variant='subtitle1'
+					component='div'>
 					{numSelected} selected
 				</Typography>
 			) : (
@@ -173,9 +194,9 @@ const EnhancedTableToolbar = props => {
 	);
 };
 
-EnhancedTableToolbar.propTypes = {
-	numSelected: PropTypes.number.isRequired,
-};
+// EnhancedTableToolbar.propTypes = {
+// 	numSelected: PropTypes.number.isRequired,
+// };
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -236,7 +257,10 @@ export default function EnhancedTable() {
 		} else if (selectedIndex === selected.length - 1) {
 			newSelected = newSelected.concat(selected.slice(0, -1));
 		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+			newSelected = newSelected.concat(
+				selected.slice(0, selectedIndex),
+				selected.slice(selectedIndex + 1)
+			);
 		}
 
 		setSelected(newSelected);
@@ -264,7 +288,11 @@ export default function EnhancedTable() {
 			<Paper className={classes.paper}>
 				<EnhancedTableToolbar numSelected={selected.length} />
 				<TableContainer>
-					<Table className={classes.table} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'} aria-label='enhanced table'>
+					<Table
+						className={classes.table}
+						aria-labelledby='tableTitle'
+						size={dense ? 'small' : 'medium'}
+						aria-label='enhanced table'>
 						<EnhancedTableHead
 							classes={classes}
 							numSelected={selected.length}
@@ -291,9 +319,16 @@ export default function EnhancedTable() {
 											key={row.name}
 											selected={isItemSelected}>
 											<TableCell padding='checkbox'>
-												<Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }} />
+												<Checkbox
+													checked={isItemSelected}
+													inputProps={{ 'aria-labelledby': labelId }}
+												/>
 											</TableCell>
-											<TableCell component='th' id={labelId} scope='row' padding='none'>
+											<TableCell
+												component='th'
+												id={labelId}
+												scope='row'
+												padding='none'>
 												{row.name}
 											</TableCell>
 											<TableCell align='right'>{row.calories}</TableCell>

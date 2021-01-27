@@ -1,5 +1,1 @@
-export {
-    startTimer,
-    pauseTimer,
-    stopTimer,
-} from './timerActions';
+export { startTimer, pauseTimer, stopTimer } from './timerActions';

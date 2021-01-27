@@ -13,15 +13,15 @@ const Task = () => {
 	const [isStarted, setIsStarted] = useState(false);
 
 	const getSeconds = () => {
-		return ('0' + Math.floor(secondsElapsed % 60)).slice(-2);
+		return `0${Math.floor(secondsElapsed % 60)}`.slice(-2);
 	};
 
 	const getMinutes = () => {
-		return ('0' + Math.floor(secondsElapsed / 60)).slice(-2);
+		return `0${Math.floor(secondsElapsed / 60)}`.slice(-2);
 	};
 
 	const getHours = () => {
-		return ('0' + Math.floor(secondsElapsed / 3600)).slice(-2);
+		return `0${Math.floor(secondsElapsed / 3600)}`.slice(-2);
 	};
 
 	const timerStartedHandler = () => {
@@ -29,26 +29,30 @@ const Task = () => {
 		console.log('Timer Started');
 
 		incrementor = setInterval(() => {
-			setSecondsElapsed(secondsElapsed => secondsElapsed + 1);
+			// setSecondsElapsed((secondsElapsed) => secondsElapsed + 1);
+			setSecondsElapsed(seconds => secondsElapsed + 1);
 		}, 1000);
 	};
 
 	const timerPausedHandler = () => {
 		clearInterval(incrementor);
-		console.log('Timer Paused');
 	};
 	const timerStoppedHandler = () => {
 		clearInterval(incrementor);
 		setSecondsElapsed(0);
 		setIsStarted(false);
-		console.log('Timer Stopped');
 	};
 
 	return (
 		<div className={classes.ActiveTask}>
 			<div className={classes.container}>
 				<Timer minutes={getMinutes()} seconds={getSeconds()} hours={getHours()} />
-				<TimerControls timerStarted={timerStartedHandler} timerPaused={timerPausedHandler} timerStopped={timerStoppedHandler} disabled={!isStarted} />
+				<TimerControls
+					timerStarted={timerStartedHandler}
+					timerPaused={timerPausedHandler}
+					timerStopped={timerStoppedHandler}
+					disabled={!isStarted}
+				/>
 			</div>
 			<TaskDescription />
 		</div>

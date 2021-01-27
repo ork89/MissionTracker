@@ -35,7 +35,11 @@ const SelectInput = props => {
 	};
 
 	return (
-		<Select id='priority-select' value={priority} onChange={handleChange} input={<BootstrapInput />}>
+		<Select
+			id='priority-select'
+			value={priority}
+			onChange={handleChange}
+			input={<BootstrapInput />}>
 			<MenuItem value='noneIssue'>Non Issue</MenuItem>
 			<MenuItem value='low'>Low</MenuItem>
 			<MenuItem value='medium'>Medium</MenuItem>

@@ -1,48 +1,48 @@
 .Button {
-    background-color: transparent;
-    border: none;
-    color: white;
-    outline: none;
-    cursor: pointer;
-    font: inherit;
-    padding: 5px;
-    margin: 5px;
-    font-weight: bold;
+	background-color: transparent;
+	border: none;
+	color: white;
+	outline: none;
+	cursor: pointer;
+	font: inherit;
+	padding: 5px;
+	margin: 5px;
+	font-weight: bold;
 }
 
 .Button:first-of-type {
-    margin-left: 0;
-    padding-left: 0;
+	margin-left: 0;
+	padding-left: 0;
 }
 
 .Button:disabled {
-    color: #ccc;
-    cursor: not-allowed;
+	color: #ccc;
+	cursor: not-allowed;
 }
 
 /* Play button */
 .Success {
-    /* color: #7cc418; */
-    color: #40A4C8;
-    font-size: 35px;
+	/* color: #7cc418; */
+	color: #40a4c8;
+	font-size: 35px;
 }
 
 /* Stop button */
 .Warning {
-    color: #eb3d1e;
-    font-size: 35px;
+	color: #eb3d1e;
+	font-size: 35px;
 }
 
 /* Pause button */
 .Caution {
-    color: #FFCA2C;
-    font-size: 35px;
+	color: #ffca2c;
+	font-size: 35px;
 }
 
 .Primary {
-    color: #178C92;
+	color: #178c92;
 }
 
 .Secondary {
-    color: #33D7DF;
+	color: #33d7df;
 }

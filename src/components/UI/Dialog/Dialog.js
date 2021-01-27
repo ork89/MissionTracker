@@ -27,7 +27,14 @@ const FormDialog = props => {
 				<DialogTitle id='form-dialog-title'>{props.dialogTitle}</DialogTitle>
 				<DialogContent>
 					<DialogContentText>{props.dialogContent}</DialogContentText>
-					<TextField autoFocus margin='dense' id='name' label={props.textFieldLabel} type={props.textFieldType} fullWidth />
+					<TextField
+						autoFocus
+						margin='dense'
+						id='name'
+						label={props.textFieldLabel}
+						type={props.textFieldType}
+						fullWidth
+					/>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose} color='primary'>

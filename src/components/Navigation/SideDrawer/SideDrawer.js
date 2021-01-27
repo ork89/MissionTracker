@@ -16,7 +16,12 @@ const SideDrawer = props => {
 	return (
 		<Auxiliary>
 			<Backdrop show={props.open} backdropClicked={props.closed} />
-			<div className={attachedClasses.join(' ')} onClick={props.closed}>
+			{/* The <div> element has a child <button> element that allows keyboard interaction */}
+			{/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+			<div
+				className={attachedClasses.join(' ')}
+				onClick={props.closed}
+				onKeyPress={props.closed}>
 				<div className={classes.Logo}>
 					<Logo />
 				</div>

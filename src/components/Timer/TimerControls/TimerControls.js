@@ -10,7 +10,8 @@ const TimerControls = props => {
 				started={() => props.timerStarted()}
 				paused={() => props.timerPaused()}
 				stopped={() => props.timerStopped()}
-				disabled={props.disabled} />
+				disabled={props.disabled}
+			/>
 		</div>
 	);
 };

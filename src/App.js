@@ -1,5 +1,5 @@
-import React, { useEffect, Suspense } from 'react';
-import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Layout from './hoc/Layout/Layout';
 import TaskItemList from './containers/TaskItemList/TaskItemList';
 import Projects from './containers/Projects/Projects';
@@ -11,7 +11,7 @@ const projects = React.lazy(() => {
 });
 
 const App = props => {
-	let routes = (
+	const routes = (
 		<Switch>
 			<Route path='/' exact component={TaskItemList} />
 			<Route path='/Projects' component={Projects} />

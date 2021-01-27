@@ -31,7 +31,7 @@ const TimeDialog = props => {
 	const [hours, setHoursValue] = useState();
 
 	useEffect(() => {
-		let time = props.value.toString();
+		const time = props.value.toString();
 		setHoursValue(time.substring(0, 2));
 		setMinutesValue(time.substring(3, 5));
 		setSecondsValue(time.substring(6, 8));
