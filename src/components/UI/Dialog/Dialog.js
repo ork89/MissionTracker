@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,31 +8,40 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const FormDialog = props => {
-	const [open, setOpen] = React.useState(false);
-
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
+	const [open, setOpen] = useState(false);
+	const {
+		dialogTitle,
+		dialogContent,
+		textFieldLabel,
+		textFieldType,
+		variant,
+		color,
+		btnOpenLabel,
+	} = props;
 
 	const handleClose = () => {
 		setOpen(false);
 	};
 
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
 	return (
 		<div>
-			<Button variant={props.variant} color={props.color} onClick={handleClickOpen}>
-				{props.btnOpenLabel}
+			<Button variant={variant} color={color} onClick={handleClickOpen}>
+				{btnOpenLabel}
 			</Button>
 			<Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
-				<DialogTitle id='form-dialog-title'>{props.dialogTitle}</DialogTitle>
+				<DialogTitle id='form-dialog-title'>{dialogTitle}</DialogTitle>
 				<DialogContent>
-					<DialogContentText>{props.dialogContent}</DialogContentText>
+					<DialogContentText>{dialogContent}</DialogContentText>
 					<TextField
 						autoFocus
 						margin='dense'
 						id='name'
-						label={props.textFieldLabel}
-						type={props.textFieldType}
+						label={textFieldLabel}
+						type={textFieldType}
 						fullWidth
 					/>
 				</DialogContent>

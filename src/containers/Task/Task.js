@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import Timer from '../../components/Timer/Timer';
 import TimerControls from '../../components/Timer/TimerControls/TimerControls';
 import TaskDescription from '../../components/Timer/TaskDescription/TaskDescription';
-
+import SelectInput from '../../components/UI/Input/SelectInput';
+import Dialog from '../../components/UI/Dialog/ProjectDialog';
 import classes from './Task.module.css';
 
 let incrementor;
@@ -11,6 +12,7 @@ let incrementor;
 const Task = () => {
 	const [secondsElapsed, setSecondsElapsed] = useState(0);
 	const [isStarted, setIsStarted] = useState(false);
+	const [, setOpen] = useState(false);
 
 	const getSeconds = () => {
 		return `0${Math.floor(secondsElapsed % 60)}`.slice(-2);
@@ -29,8 +31,7 @@ const Task = () => {
 		console.log('Timer Started');
 
 		incrementor = setInterval(() => {
-			// setSecondsElapsed((secondsElapsed) => secondsElapsed + 1);
-			setSecondsElapsed(seconds => secondsElapsed + 1);
+			setSecondsElapsed(secondsElapsed => secondsElapsed + 1);
 		}, 1000);
 	};
 
@@ -43,6 +44,7 @@ const Task = () => {
 		setIsStarted(false);
 	};
 
+
 	return (
 		<div className={classes.ActiveTask}>
 			<div className={classes.container}>
@@ -53,8 +55,11 @@ const Task = () => {
 					timerStopped={timerStoppedHandler}
 					disabled={!isStarted}
 				/>
+				<TaskDescription />
+				<SelectInput priority='low' />
+				<Dialog />
 			</div>
-			<TaskDescription />
+			<div className={classes.projectAndPriority}></div>
 		</div>
 	);
 };
