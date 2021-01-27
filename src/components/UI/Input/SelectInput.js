@@ -12,17 +12,17 @@ const BootstrapInput = withStyles(theme => ({
 		},
 	},
 	input: {
-		borderBottom: '1px solid #ced4da',
+		// borderBottom: '1px solid #ced4da',
 		position: 'relative',
 		backgroundColor: theme.palette.background.paper,
 		fontSize: 16,
-		padding: '10px 26px 10px 12px',
+		padding: '10px 26px 10px 26px',
 		transition: theme.transitions.create(['border-color', 'box-shadow']),
 
 		fontFamily: ['"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
 		'&:focus': {
-			borderColor: '#7CDFBF',
-			boxShadow: '0 0 0 0.2rem rgba(124, 223, 192, 0.253);',
+			borderColor: 'transparent',
+			boxShadow: '0 0 0 0.2rem rgba(69, 76, 90, 0.253);',
 		},
 	},
 }))(InputBase);
