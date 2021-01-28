@@ -2,7 +2,6 @@
 	height: 80px;
 	width: 100%;
 	background-color: #fff;
-	display: flex;
 	box-shadow: 1px 1px 5px #a0a0a0;
 	display: flex;
 	flex-direction: row;
@@ -12,6 +11,12 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+}
+
+.projectAndPriority {
+	display: inline-flex;
+	align-items: center;
+	margin: 0 10px 0 auto;
 }
 
 @media screen and (max-width: 640px) {

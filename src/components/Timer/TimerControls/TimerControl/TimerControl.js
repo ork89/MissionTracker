@@ -16,21 +16,20 @@ const TimerControl = props => {
 				</IconButton>
 			</div>
 		);
-	} else {
-		return (
-			<div className={classes.TimerControl}>
-				<IconButton onClick={props.started} color='primary'>
-					<PlayCircleOutlineIcon fontSize='large' />
-				</IconButton>
-				<IconButton onClick={props.paused}>
-					<PauseCircleOutlineIcon fontSize='large' />
-				</IconButton>
-				<IconButton onClick={props.stopped} color='secondary'>
-					<HighlightOffIcon fontSize='large' />
-				</IconButton>
-			</div>
-		);
 	}
+	return (
+		<div className={classes.TimerControl}>
+			<IconButton onClick={props.started} color='primary'>
+				<PlayCircleOutlineIcon fontSize='large' />
+			</IconButton>
+			<IconButton onClick={props.paused}>
+				<PauseCircleOutlineIcon fontSize='large' />
+			</IconButton>
+			<IconButton onClick={props.stopped} color='secondary'>
+				<HighlightOffIcon fontSize='large' />
+			</IconButton>
+		</div>
+	);
 };
 
 export default TimerControl;

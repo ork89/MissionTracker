@@ -5,9 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
 	root: {
+		display: 'inline-flex',
 		'& .MuiTextField-root': {
-			margin: '10px',
-			width: 400,
+			marginTop: '10px',
+			width: 150,
 		},
 		'& .MuiInput-underline:before': {
 			border: 'none',

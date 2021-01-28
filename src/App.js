@@ -1,20 +1,27 @@
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Layout from './hoc/Layout/Layout';
-import TaskItemList from './containers/TaskItemList/TaskItemList';
-import Projects from './containers/Projects/Projects';
 
 import './App.css';
+
+const tracker = React.lazy(() => {
+	return import('./containers/Tracker/Tracker');
+});
 
 const projects = React.lazy(() => {
 	return import('./containers/Projects/Projects');
 });
 
+const reports = React.lazy(() => {
+	return import('./containers/Reports/Reports');
+});
+
 const App = props => {
 	const routes = (
 		<Switch>
-			<Route path='/' exact component={TaskItemList} />
-			<Route path='/Projects' component={Projects} />
+			<Route path='/' exact component={tracker} />
+			<Route path='/projects' component={projects} />
+			<Route path='/reports' component={reports} />
 			<Redirect to='/' />
 		</Switch>
 	);

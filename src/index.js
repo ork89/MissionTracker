@@ -5,12 +5,29 @@ import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
 
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import App from './App';
 import timerReducer from './store/reducers/timerReducer';
 import projectsReducer from './store/reducers/projectsReducer';
 
 import './index.css';
-import reportWebVitals from './reportWebVitals';
+
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			light: '#affff2',
+			main: '#7cdfbf',
+			dark: '#49ad8f',
+			contrastText: '#fff',
+		},
+		secondary: {
+			light: '#95ffb3',
+			main: '#5cf482',
+			dark: '#00c053',
+			contrastText: '#000',
+		},
+	},
+});
 
 const composeEnhancers =
 	(process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) ||
@@ -26,15 +43,12 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
 console.log(store.getState());
 
 ReactDOM.render(
-	<Provider store={store}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</Provider>,
+	<ThemeProvider theme={theme}>
+		<Provider store={store}>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</Provider>
+	</ThemeProvider>,
 	document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

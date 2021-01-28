@@ -14,7 +14,6 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import Projects from '../../../containers/Projects/Projects';
 
 const FormDialog = props => {
 	const [open, setOpen] = useState(false);
@@ -22,18 +21,21 @@ const FormDialog = props => {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const [projects, setProjects] = useState([
 		{
+			id: 1,
 			name: 'IncoMaster',
 			totalTime: '76:12:19',
 			client: 'Ori M. K.',
 			status: 'Done',
 		},
 		{
+			id: 2,
 			name: 'MissionTracker',
 			totalTime: '04:58:45',
 			client: 'Ori M. K.',
 			status: 'inprogress',
 		},
 		{
+			id: 3,
 			name: 'Portfolio',
 			totalTime: '00:38:41',
 			client: 'Ori M. K.',
@@ -53,12 +55,13 @@ const FormDialog = props => {
 		setOpen(true);
 	};
 
-	const handleListItemClick = index => {
-		setSelectedIndex(index);
+	const handleListItemClick = id => {
+		setSelectedIndex(id);
 	};
 
 	const useStyles = makeStyles(theme => ({
 		root: {
+			display: 'flex',
 			flexGrow: 1,
 			maxWidth: 752,
 			padding: 0,
@@ -69,20 +72,29 @@ const FormDialog = props => {
 		title: {
 			margin: theme.spacing(2),
 		},
+		container: {
+			display: 'flex',
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
 	}));
 
 	const classes = useStyles();
 
 	return (
-		<div>
-			<IconButton variant={variant} color={color} onClick={handleClickOpen}>
-				<FolderOpenIcon />
-				{btnOpenLabel}
-			</IconButton>
+		<div className={classes.root}>
+			<div className={classes.container}>
+				<IconButton variant={variant} color={color} onClick={handleClickOpen}>
+					<FolderOpenIcon />
+					{btnOpenLabel}
+				</IconButton>
+				<h5>{projects[selectedIndex].name}</h5>
+			</div>
 			<Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
 				<DialogTitle id='form-dialog-title'>{dialogTitle}</DialogTitle>
 				<DialogContent>
-					<Grid item md={12} md={12}>
+					<Grid item md={12}>
 						<Typography variant='h6' className={classes.title}>
 							Select a project
 						</Typography>
@@ -90,7 +102,7 @@ const FormDialog = props => {
 							<List>
 								{projects.map((proj, index) => (
 									<ListItem
-										key={index}
+										key={proj.id}
 										button
 										selected={selectedIndex === index}
 										onClick={event => handleListItemClick(index)}>
