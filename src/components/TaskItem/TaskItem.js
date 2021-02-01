@@ -28,7 +28,7 @@ const TaskItem = props => {
 		endTimeInput,
 		totalTimeInput,
 		project,
-		key,
+		taskId,
 		date,
 		priority,
 		description,
@@ -97,7 +97,7 @@ const TaskItem = props => {
 				/>
 			</div>
 			<SelectInput
-				selectId={Math.floor(Math.random(key) * 1000)}
+				selectId={Math.floor(Math.random(taskId) * 1000)}
 				defaultValue={priority}
 				inputOptions={priorities}
 			/>
@@ -105,7 +105,6 @@ const TaskItem = props => {
 				<div className={classes.container}>
 					<div className={classes.timeControlsContainer}>
 						<TimeDialog
-							key={key}
 							dialogTitle='Start Time'
 							textFieldLabel='Start time'
 							textFieldType='text'

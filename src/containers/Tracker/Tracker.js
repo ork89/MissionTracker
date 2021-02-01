@@ -52,7 +52,8 @@ const Tracker = () => {
 			<div className={classes.TaskItemList}>
 				{tasksList.map(task => (
 					<TaskItem
-						key={task.id}
+						key={Math.floor(Math.random() * 10000)}
+						taskId={task.id}
 						description={task.taskDescription}
 						project={task.project}
 						startTimeInput={task.startTime}

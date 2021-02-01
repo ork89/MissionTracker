@@ -36,7 +36,7 @@ const SelectInput = props => {
 	};
 
 	const options = inputOptions != null ? Object.values(inputOptions) : [];
-	console.log({ selectId });
+
 	return (
 		<Select
 			key={selectId}
@@ -45,7 +45,11 @@ const SelectInput = props => {
 			onChange={handleChange}
 			input={<BootstrapInput />}>
 			{options.map(p => {
-				return <MenuItem value={p}>{p}</MenuItem>;
+				return (
+					<MenuItem key={Math.floor(Math.random(selectId) * 1000)} value={p}>
+						{p}
+					</MenuItem>
+				);
 			})}
 		</Select>
 	);
