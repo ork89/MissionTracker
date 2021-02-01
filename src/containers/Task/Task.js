@@ -12,7 +12,7 @@ let incrementor;
 const Task = () => {
 	const [secondsElapsed, setSecondsElapsed] = useState(0);
 	const [isStarted, setIsStarted] = useState(false);
-	const [, setOpen] = useState(false);
+	const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
 	const getSeconds = () => {
 		return `0${Math.floor(secondsElapsed % 60)}`.slice(-2);
@@ -28,7 +28,6 @@ const Task = () => {
 
 	const timerStartedHandler = () => {
 		setIsStarted(true);
-		console.log('Timer Started');
 
 		incrementor = setInterval(() => {
 			setSecondsElapsed(seconds => seconds + 1);
@@ -55,7 +54,7 @@ const Task = () => {
 			/>
 			<TaskDescription />
 			<div className={classes.projectAndPriority}>
-				<SelectInput priority='low' />
+				<SelectInput defaultValue='Low' inputOptions={priorities} />
 				<ProjectDialog />
 			</div>
 		</div>

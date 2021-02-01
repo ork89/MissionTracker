@@ -7,8 +7,6 @@ const initialState = {
 };
 
 const startTimer = (state, action) => {
-	console.log('TimerReducer[startTimer]: ', action.time);
-	console.log('TimerReducer[startTimer]: ', state.recordedTime);
 	return updateObject(state, {
 		started: action.time,
 	});

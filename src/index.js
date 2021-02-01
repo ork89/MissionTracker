@@ -40,8 +40,6 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
-console.log(store.getState());
-
 ReactDOM.render(
 	<ThemeProvider theme={theme}>
 		<Provider store={store}>

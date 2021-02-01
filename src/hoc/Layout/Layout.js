@@ -8,6 +8,7 @@ import classes from './Layout.module.css';
 
 const Layout = props => {
 	const [isSideDrawerVisible, setIsSideDrawerVisible] = useState(false);
+	const { children } = props;
 
 	const closeSideDrawerHandler = () => {
 		setIsSideDrawerVisible(false);
@@ -24,7 +25,7 @@ const Layout = props => {
 				<div className={classes.navigationMenu}>
 					<Menu drawerToggleClicked={sideDrawerToggleHandler} />
 				</div>
-				<main className={classes.page}>{props.children}</main>
+				<main className={classes.page}>{children}</main>
 			</div>
 		</Auxiliary>
 	);

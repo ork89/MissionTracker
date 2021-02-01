@@ -23,11 +23,22 @@ const useStyles = makeStyles(theme => ({
 
 const TaskItem = props => {
 	const styles = useStyles();
+	const {
+		startTimeInput,
+		endTimeInput,
+		totalTimeInput,
+		project,
+		key,
+		date,
+		priority,
+		description,
+	} = props;
 	const [anchorEl, setAnchorEl] = useState(null);
-	const [startTime, setStartTime] = useState(props.startTime);
-	const [endTime, setEndTime] = useState(props.endTime);
-	const [totalTime, setTotalTime] = useState(props.totalTime);
-	const { project, date, priority, description } = props;
+	const [startTime, setStartTime] = useState(startTimeInput);
+	const [endTime, setEndTime] = useState(endTimeInput);
+	const [totalTime, setTotalTime] = useState(totalTimeInput);
+
+	const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
 	const padWithZero = time => {
 		return time.length < 2 ? time.padStart(2, '0').toString() : '';
@@ -85,11 +96,16 @@ const TaskItem = props => {
 					inputProps={{ 'aria-label': 'naked' }}
 				/>
 			</div>
-			<SelectInput priority={priority} />
+			<SelectInput
+				selectId={Math.floor(Math.random(key) * 1000)}
+				defaultValue={priority}
+				inputOptions={priorities}
+			/>
 			<div className={classes.details}>
 				<div className={classes.container}>
 					<div className={classes.timeControlsContainer}>
 						<TimeDialog
+							key={key}
 							dialogTitle='Start Time'
 							textFieldLabel='Start time'
 							textFieldType='text'

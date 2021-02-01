@@ -16,7 +16,7 @@ const reports = React.lazy(() => {
 	return import('./containers/Reports/Reports');
 });
 
-const App = props => {
+const App = () => {
 	const routes = (
 		<Switch>
 			<Route path='/' exact component={tracker} />

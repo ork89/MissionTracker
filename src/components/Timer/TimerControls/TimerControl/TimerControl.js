@@ -8,10 +8,12 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import classes from './TimerControl.module.css';
 
 const TimerControl = props => {
-	if (props.disabled) {
+	const { started, paused, stopped, disabled } = props;
+
+	if (disabled) {
 		return (
 			<div className={classes.TimerControl}>
-				<IconButton onClick={props.started} color='primary'>
+				<IconButton onClick={started} color='primary'>
 					<PlayCircleOutlineIcon fontSize='large' />
 				</IconButton>
 			</div>
@@ -19,13 +21,13 @@ const TimerControl = props => {
 	}
 	return (
 		<div className={classes.TimerControl}>
-			<IconButton onClick={props.started} color='primary'>
+			<IconButton onClick={started} color='primary'>
 				<PlayCircleOutlineIcon fontSize='large' />
 			</IconButton>
-			<IconButton onClick={props.paused}>
+			<IconButton onClick={paused}>
 				<PauseCircleOutlineIcon fontSize='large' />
 			</IconButton>
-			<IconButton onClick={props.stopped} color='secondary'>
+			<IconButton onClick={stopped} color='secondary'>
 				<HighlightOffIcon fontSize='large' />
 			</IconButton>
 		</div>

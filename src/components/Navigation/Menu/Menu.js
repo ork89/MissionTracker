@@ -6,9 +6,11 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './Menu.module.css';
 
 const Menu = props => {
+	const { drawerToggleClicked } = props;
+
 	return (
 		<div className={classes.Menu}>
-			<DrawerToggle clicked={props.drawerToggleClicked} />
+			<DrawerToggle clicked={drawerToggleClicked} />
 			<div className={classes.logo}>
 				<Logo />
 			</div>

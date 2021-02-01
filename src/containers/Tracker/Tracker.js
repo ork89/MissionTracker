@@ -4,7 +4,8 @@ import TaskItem from '../../components/TaskItem/TaskItem';
 import Task from '../Task/Task';
 import classes from './Tracker.module.css';
 
-const Tracker = props => {
+const Tracker = () => {
+	// TODO: Replace hardcoded tasks with tasks form the DB
 	const [tasksList, setTasksList] = useState([
 		{
 			id: 'aabbcc',
@@ -14,7 +15,7 @@ const Tracker = props => {
 			endTime: '09:34:44',
 			totalTime: '01:29:34',
 			date: new Date('2021-01-11T00:00:00'),
-			priority: 'low',
+			priority: 'Low',
 		},
 		{
 			id: 'ddeeff',
@@ -24,7 +25,7 @@ const Tracker = props => {
 			endTime: '10:02:39',
 			totalTime: '00:27:55',
 			date: new Date('2021-01-12T00:00:00'),
-			priority: 'low',
+			priority: 'Low',
 		},
 		{
 			id: 'gghhii',
@@ -34,7 +35,7 @@ const Tracker = props => {
 			endTime: '13:04:11',
 			totalTime: '03:01:16',
 			date: new Date('2021-01-12T00:00:00'),
-			priority: 'medium',
+			priority: 'Medium',
 		},
 	]);
 
@@ -54,9 +55,9 @@ const Tracker = props => {
 						key={task.id}
 						description={task.taskDescription}
 						project={task.project}
-						startTime={task.startTime}
-						endTime={task.endTime}
-						totalTime={task.totalTime}
+						startTimeInput={task.startTime}
+						endTimeInput={task.endTime}
+						totalTimeInput={task.totalTime}
 						date={task.date}
 						priority={task.priority}
 						deleteItem={() => handleDelete(task.id)}

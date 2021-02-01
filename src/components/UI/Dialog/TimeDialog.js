@@ -29,13 +29,26 @@ const TimeDialog = props => {
 	const [seconds, setSecondsValue] = useState();
 	const [minutes, setMinutesValue] = useState();
 	const [hours, setHoursValue] = useState();
+	const {
+		value,
+		btnOpenLabel,
+		variant,
+		color,
+		dialogTitle,
+		dialogContent,
+		secondsTextFieldLabel,
+		minutesTextFieldLabel,
+		hoursTextFieldLabel,
+		textFieldType,
+		key,
+	} = props;
 
 	useEffect(() => {
-		const time = props.value.toString();
+		const time = value.toString();
 		setHoursValue(time.substring(0, 2));
 		setMinutesValue(time.substring(3, 5));
 		setSecondsValue(time.substring(6, 8));
-	}, [props.value]);
+	}, [value]);
 
 	const handleChangeInSeconds = event => {
 		setSecondsValue(event.target.value);
@@ -64,13 +77,16 @@ const TimeDialog = props => {
 
 	return (
 		<div>
-			<Button variant={props.variant} color={props.color} onClick={handleClickOpen}>
-				{props.btnOpenLabel}
+			<Button variant={variant} color={color} onClick={handleClickOpen}>
+				{btnOpenLabel}
 			</Button>
-			<Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
-				<DialogTitle id='form-dialog-title'>{props.dialogTitle}</DialogTitle>
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				aria-labelledby={`form-dialog-${dialogTitle}`}>
+				<DialogTitle id={`${key}-dialog`}>{dialogTitle}</DialogTitle>
 				<DialogContent>
-					<DialogContentText>{props.dialogContent}</DialogContentText>
+					<DialogContentText>{dialogContent}</DialogContentText>
 					<div className={classes.container}>
 						<TextField
 							autoFocus
@@ -78,8 +94,8 @@ const TimeDialog = props => {
 							margin='dense'
 							size='small'
 							id='hours'
-							label={props.hoursTextFieldLabel}
-							type={props.textFieldType}
+							label={hoursTextFieldLabel}
+							type={textFieldType}
 							defaultValue={hours}
 							onChange={handleChangeInHours}
 						/>
@@ -89,8 +105,8 @@ const TimeDialog = props => {
 							margin='dense'
 							size='small'
 							id='minutes'
-							label={props.minutesTextFieldLabel}
-							type={props.textFieldType}
+							label={minutesTextFieldLabel}
+							type={textFieldType}
 							defaultValue={minutes}
 							onChange={handleChangeInMinutes}
 						/>
@@ -100,8 +116,8 @@ const TimeDialog = props => {
 							margin='dense'
 							size='small'
 							id='seconds'
-							label={props.secondsTextFieldLabel}
-							type={props.textFieldType}
+							label={secondsTextFieldLabel}
+							type={textFieldType}
 							defaultValue={seconds}
 							onChange={handleChangeInSeconds}
 						/>
