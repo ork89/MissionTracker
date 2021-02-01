@@ -9,17 +9,17 @@ const BootstrapInput = withStyles(theme => ({
 	root: {
 		'label + &': {
 			marginTop: theme.spacing(3),
+			textAlign: 'left',
 		},
 	},
 	input: {
-		// borderBottom: '1px solid #ced4da',
 		position: 'relative',
 		backgroundColor: theme.palette.background.paper,
 		fontSize: 16,
 		padding: '10px 26px 10px 26px',
 		transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-		fontFamily: ['"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+		textAlign: 'left',
+		fontFamily: ['Roboto', '"Segoe UI"', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
 		'&:focus': {
 			borderColor: 'transparent',
 			boxShadow: '0 0 0 0.2rem rgba(69, 76, 90, 0.253);',
@@ -28,22 +28,25 @@ const BootstrapInput = withStyles(theme => ({
 }))(InputBase);
 
 const SelectInput = props => {
-	const [priority, setPriority] = useState(props.priority);
+	const { defaultValue, inputOptions, selectId } = props;
+	const [fieldValue, setFieldValue] = useState(defaultValue);
 
 	const handleChange = event => {
-		setPriority(event.target.value);
+		setFieldValue(event.target.value);
 	};
 
+	const options = inputOptions != null ? Object.values(inputOptions) : [];
+	console.log({ selectId });
 	return (
 		<Select
-			id='priority-select'
-			value={priority}
+			key={selectId}
+			id={`priority-select_${selectId}`}
+			value={fieldValue}
 			onChange={handleChange}
 			input={<BootstrapInput />}>
-			<MenuItem value='noneIssue'>Non Issue</MenuItem>
-			<MenuItem value='low'>Low</MenuItem>
-			<MenuItem value='medium'>Medium</MenuItem>
-			<MenuItem value='high'>High</MenuItem>
+			{options.map(p => {
+				return <MenuItem value={p}>{p}</MenuItem>;
+			})}
 		</Select>
 	);
 };
