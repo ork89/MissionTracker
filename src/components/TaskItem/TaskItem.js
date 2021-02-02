@@ -37,6 +37,7 @@ const TaskItem = props => {
 	const [startTime, setStartTime] = useState(startTimeInput);
 	const [endTime, setEndTime] = useState(endTimeInput);
 	const [totalTime, setTotalTime] = useState(totalTimeInput);
+	const [inputSelectedValue, setInputSelectedValue] = useState();
 
 	const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
@@ -85,6 +86,10 @@ const TaskItem = props => {
 		setEndTime(`${hours}:${minutes}:${seconds}`);
 	};
 
+	const handleSelectedValue = value => {
+		setInputSelectedValue(value);
+	};
+
 	return (
 		<div className={classes.TaskItem}>
 			<DoubleArrowIcon style={{ fontSize: 12, color: '#A0A0A0', marginLeft: 10 }} />
@@ -100,6 +105,7 @@ const TaskItem = props => {
 				selectId={Math.floor(Math.random(taskId) * 1000)}
 				defaultValue={priority}
 				inputOptions={priorities}
+				selectedValue={handleSelectedValue}
 			/>
 			<div className={classes.details}>
 				<div className={classes.container}>
@@ -122,7 +128,7 @@ const TaskItem = props => {
 						/>
 					</div>
 					<p className={classes.time}>{totalTime}</p>
-					<DatePicker date={date} />
+					<DatePicker date={date} uid={taskId} />
 				</div>
 			</div>
 			<div className={classes.optionsMenu}>

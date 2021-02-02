@@ -12,6 +12,7 @@ let incrementor;
 const Task = () => {
 	const [secondsElapsed, setSecondsElapsed] = useState(0);
 	const [isStarted, setIsStarted] = useState(false);
+	const [inputSelectedValue, setInputSelectedValue] = useState();
 	const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
 	const getSeconds = () => {
@@ -43,6 +44,10 @@ const Task = () => {
 		setIsStarted(false);
 	};
 
+	const handleSelectedValue = value => {
+		setInputSelectedValue(value);
+	};
+
 	return (
 		<div className={classes.ActiveTask}>
 			<Timer minutes={getMinutes()} seconds={getSeconds()} hours={getHours()} />
@@ -54,7 +59,11 @@ const Task = () => {
 			/>
 			<TaskDescription />
 			<div className={classes.projectAndPriority}>
-				<SelectInput defaultValue='Low' inputOptions={priorities} />
+				<SelectInput
+					defaultValue='Low'
+					inputOptions={priorities}
+					selectedValue={handleSelectedValue}
+				/>
 				<ProjectDialog />
 			</div>
 		</div>

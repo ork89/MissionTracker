@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import MuiInput from '../UI/Input/MuiInput';
 import SelectInput from '../UI/Input/SelectInput';
 import classes from './ProjectItem.module.css';
@@ -19,8 +18,13 @@ const useStyles = makeStyles(theme => ({
 
 const ProjectItem = props => {
 	const styles = useStyles();
+	const [selectedOption, setSelectedOption] = useState();
 	const statusOptions = ['Created', 'In-Progress', 'Postponed', 'Done'];
 	const { projectName, totalTime, client, status, projectId } = props;
+
+	const handleSelectedValue = value => {
+		setSelectedOption(value);
+	};
 
 	return (
 		<div className={classes.ProjectItem}>
@@ -49,6 +53,7 @@ const ProjectItem = props => {
 						selectId={Math.floor(Math.random(projectId) * 1000)}
 						defaultValue={status}
 						inputOptions={statusOptions}
+						selectedValue={handleSelectedValue}
 					/>
 				</form>
 			</div>

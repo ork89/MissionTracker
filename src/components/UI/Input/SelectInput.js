@@ -29,29 +29,35 @@ const BootstrapInput = withStyles(theme => ({
 
 const SelectInput = props => {
 	const { defaultValue, inputOptions, selectId } = props;
-	const [fieldValue, setFieldValue] = useState(defaultValue);
+	const [selectedInputValue, setSelectedInputValue] = useState(defaultValue);
+	let uid = Math.floor(Math.random(selectId) * 1000);
 
 	const handleChange = event => {
-		setFieldValue(event.target.value);
+		setSelectedInputValue(event.target.value);
+		const value = event.target.value;
+
+		props.selectedValue(value);
 	};
 
 	const options = inputOptions != null ? Object.values(inputOptions) : [];
 
 	return (
-		<Select
-			key={selectId}
-			id={`priority-select_${selectId}`}
-			value={fieldValue}
-			onChange={handleChange}
-			input={<BootstrapInput />}>
-			{options.map(p => {
-				return (
-					<MenuItem key={Math.floor(Math.random(selectId) * 1000)} value={p}>
-						{p}
-					</MenuItem>
-				);
-			})}
-		</Select>
+		<React.Fragment>
+			<Select
+				key={selectId}
+				id={`priority-select_${selectId}`}
+				value={selectedInputValue}
+				onChange={handleChange}
+				input={<BootstrapInput />}>
+				{options.map(p => {
+					return (
+						<MenuItem key={uid} value={p}>
+							{p}
+						</MenuItem>
+					);
+				})}
+			</Select>
+		</React.Fragment>
 	);
 };
 
