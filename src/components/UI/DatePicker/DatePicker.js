@@ -67,7 +67,7 @@ const DatePicker = props => {
 				<Grid container justify='space-around'>
 					<KeyboardDatePicker
 						margin='normal'
-						id='date-picker'
+						id={`date-picker-for-Task${props.uid}`}
 						format='MM/dd/yyyy'
 						value={selectedDate}
 						onChange={handleDateChange}

@@ -27,16 +27,7 @@ const CreateProjectDialog = props => {
 	const [open, setOpen] = useState(false);
 	const [projectName, setProjectName] = useState('');
 	const [clientName, setClientName] = useState('');
-	const {
-		dialogTitle,
-		dialogContent,
-		textFieldLabel,
-		textFieldType,
-		variant,
-		color,
-		icon,
-		btnOpenLabel,
-	} = props;
+	const { dialogTitle, dialogContent, textFieldType, variant, color, icon, btnOpenLabel } = props;
 
 	const handleClose = () => {
 		setOpen(false);
