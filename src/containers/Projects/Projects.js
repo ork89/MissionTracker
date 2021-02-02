@@ -9,6 +9,9 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import ProjectItem from '../../components/ProjectItem/ProjectItem';
 import CreateProjectDialog from '../../components/UI/Dialog/CreateProjectDialog';
 import classes from './Projects.module.css';
+import FilterDialog from '../../components/UI/Dialog/FilterDialog';
+import TimeDialog from '../../components/UI/Dialog/TimeDialog';
+import { filterByDuration } from '../../filters/DurationFilter.js';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -23,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 const Projects = () => {
 	const styles = useStyles();
-	// TODO: Replace hardcoded projects with projects from DB
+	// TODO: Create DB and replace hardcoded projects with projects from DB
 	const [projects, setProjects] = useState([
 		{
 			id: 1,
@@ -39,7 +42,15 @@ const Projects = () => {
 			client: 'Ori M. K.',
 			status: 'In-Progress',
 		},
+		{
+			id: 3,
+			name: 'Landing Page',
+			totalTime: '00:02:18',
+			client: 'Yossi Kosman',
+			status: 'Created',
+		},
 	]);
+	const [projectsList, setProjectsList] = useState([...projects]);
 
 	const handleCreateProject = (projectName, clientName) => {
 		const newProject = {
@@ -49,12 +60,52 @@ const Projects = () => {
 			client: clientName,
 			status: 'Created',
 		};
-		const updatedProject = [newProject, ...projects];
-		setProjects(updatedProject);
+
+		console.table(newProject);
+		const updatedProjectsList = [newProject, ...projects];
+		setProjectsList(updatedProjectsList);
 	};
+
+	const handleFilterList = (filter, type) => {
+		const updatedProjectsList = projects.filter(
+			proj => proj[type].toLowerCase().trim() === filter.toLowerCase().trim()
+		);
+		setProjectsList(updatedProjectsList);
+	};
+
+	const handleFilterByDuration = (minutes, hours, seconds, operator) => {
+		if ((minutes === '' && hours === '') || (parseInt(minutes) === 0 && parseInt(hours) === 0))
+			return;
+
+		const updatedList = projects.filter(item =>
+			filterByDuration(minutes, hours, operator, item.totalTime)
+		);
+
+		setProjectsList(updatedList);
+	};
+
+	const handleClearFilters = () => {
+		setProjectsList(projects);
+	};
+
+	const statusOptions = [
+		{ type: 'Created' },
+		{ type: 'In-Progress' },
+		{ type: 'Postponed' },
+		{ type: 'Done' },
+	];
+
+	const nameOptions = projects.map(item => {
+		return { type: item.name };
+	});
+
+	const clientOptions = projects.map(item => {
+		return { type: item.client };
+	});
 
 	return (
 		<>
+			{/* ---Header--- */}
 			<div className={classes.Projects}>
 				<div className={classes.top_section}>
 					<h4>Your Projects</h4>
@@ -65,48 +116,66 @@ const Projects = () => {
 						icon={<FolderIcon />}
 						btnOpenLabel='Add New'
 						createProject={handleCreateProject}
-					/>
-				</div>
-			</div>
-			<div className={classes.filter}>
-				<h5>Filter By: </h5>
-				<div className={styles.root}>
-					<Chip
-						icon={<CreateIcon />}
-						label='Name'
-						clickable
-						color='primary'
-						variant='outlined'
-						size='small'
-					/>
-					<Chip
-						icon={<FaceIcon />}
-						label='Client'
-						clickable
-						color='primary'
-						variant='outlined'
-						size='small'
-					/>
-					<Chip
-						icon={<TimerIcon />}
-						label='Duration'
-						clickable
-						color='primary'
-						variant='outlined'
-						size='small'
-					/>
-					<Chip
-						icon={<AssignmentIcon />}
-						label='Status'
-						clickable
-						color='primary'
-						variant='outlined'
-						size='small'
+						textFieldType='text'
 					/>
 				</div>
 			</div>
 
-			{projects.map(proj => {
+			{/* ---Filter--- */}
+			<div className={classes.filter}>
+				<h5>Filter By: </h5>
+				<div className={styles.root}>
+					<FilterDialog
+						dialogTitle='Filter by projects name'
+						btnOpenLabel='Name'
+						textFieldType='text'
+						textFieldLabel='name'
+						optionsList={nameOptions}
+						chipIcon={<CreateIcon />}
+						filter={handleFilterList}
+					/>
+					<FilterDialog
+						dialogTitle='Filter by client'
+						btnOpenLabel='Client'
+						textFieldType='text'
+						textFieldLabel='client'
+						optionsList={clientOptions}
+						chipIcon={<FaceIcon />}
+						filter={handleFilterList}
+					/>
+					<TimeDialog
+						dialogTitle='Filter by duration'
+						textFieldLabel='duration'
+						btnOpenLabel='Duration'
+						textFieldType='text'
+						value='00:00:00'
+						chipIcon={<TimerIcon />}
+						origin='projects'
+						setTime={handleFilterByDuration}
+					/>
+					<FilterDialog
+						dialogTitle='Filter by status'
+						btnOpenLabel='Status'
+						textFieldType='text'
+						textFieldLabel='status'
+						optionsList={statusOptions}
+						chipIcon={<AssignmentIcon />}
+						filter={handleFilterList}
+					/>
+					<Chip
+						icon={<TimerIcon />}
+						label='Clear'
+						clickable
+						color='default'
+						variant='outlined'
+						size='small'
+						onClick={handleClearFilters}
+					/>
+				</div>
+			</div>
+
+			{/* ---Projects List--- */}
+			{projectsList.map(proj => {
 				return (
 					<ProjectItem
 						key={proj.id}

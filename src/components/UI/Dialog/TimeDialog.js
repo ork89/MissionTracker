@@ -6,6 +6,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Chip from '@material-ui/core/Chip';
+import SelectInput from '../Input/SelectInput';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -29,6 +31,7 @@ const TimeDialog = props => {
 	const [seconds, setSecondsValue] = useState();
 	const [minutes, setMinutesValue] = useState();
 	const [hours, setHoursValue] = useState();
+	const [timeDurationOperator, setTimeDurationOperator] = useState('Longer');
 	const {
 		value,
 		btnOpenLabel,
@@ -41,6 +44,8 @@ const TimeDialog = props => {
 		hoursTextFieldLabel,
 		textFieldType,
 		key,
+		origin,
+		chipIcon,
 	} = props;
 
 	useEffect(() => {
@@ -62,6 +67,10 @@ const TimeDialog = props => {
 		setHoursValue(event.target.value);
 	};
 
+	const handleSelectedValue = value => {
+		setTimeDurationOperator(value);
+	};
+
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -71,15 +80,31 @@ const TimeDialog = props => {
 	};
 
 	const handleSave = () => {
-		props.setTime(minutes, hours, seconds);
+		props.setTime(minutes, hours, seconds, timeDurationOperator);
 		setOpen(false);
 	};
 
+	const durationOptions = ['Longer', 'Shorter', 'equal'];
+	let uid = Math.floor(Math.random(key) * 1000);
+
 	return (
 		<div>
-			<Button variant={variant} color={color} onClick={handleClickOpen}>
-				{btnOpenLabel}
-			</Button>
+			{origin === 'projects' ? (
+				<Chip
+					icon={chipIcon}
+					label={btnOpenLabel}
+					clickable
+					color='primary'
+					variant='outlined'
+					size='small'
+					onClick={handleClickOpen}
+				/>
+			) : (
+				<Button variant={variant} color={color} onClick={handleClickOpen}>
+					{btnOpenLabel}
+				</Button>
+			)}
+
 			<Dialog
 				open={open}
 				onClose={handleClose}
@@ -87,6 +112,18 @@ const TimeDialog = props => {
 				<DialogTitle id={`${key}-dialog`}>{dialogTitle}</DialogTitle>
 				<DialogContent>
 					<DialogContentText>{dialogContent}</DialogContentText>
+					{origin !== undefined ? (
+						<div>
+							<label htmlFor='selectInput-for-TimeDialog'>Operator</label>
+							<SelectInput
+								id='selectInput-for-TimeDialog'
+								selectId={uid}
+								defaultValue=''
+								inputOptions={durationOptions}
+								selectedValue={handleSelectedValue}
+							/>
+						</div>
+					) : null}
 					<div className={classes.container}>
 						<TextField
 							autoFocus
