@@ -15,6 +15,7 @@
 		"no-console": "off",
 		"react/destructuring-assignment": [1],
 		"react/prop-types": [0],
+		"object-shorthand": ["error", "never"],
 		"max-len": [
 			"warn",
 			{
