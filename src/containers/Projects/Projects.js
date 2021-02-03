@@ -11,7 +11,7 @@ import CreateProjectDialog from '../../components/UI/Dialog/CreateProjectDialog'
 import classes from './Projects.module.css';
 import FilterDialog from '../../components/UI/Dialog/FilterDialog';
 import TimeDialog from '../../components/UI/Dialog/TimeDialog';
-import { filterByDuration } from '../../filters/DurationFilter.js';
+import filterByDuration from '../../filters/DurationFilter';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -74,7 +74,10 @@ const Projects = () => {
 	};
 
 	const handleFilterByDuration = (minutes, hours, seconds, operator) => {
-		if ((minutes === '' && hours === '') || (parseInt(minutes) === 0 && parseInt(hours) === 0))
+		if (
+			(minutes === '' && hours === '') ||
+			(parseInt(minutes, 10) === 0 && parseInt(hours, 10) === 0)
+		)
 			return;
 
 		const updatedList = projects.filter(item =>

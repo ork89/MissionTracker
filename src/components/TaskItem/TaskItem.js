@@ -33,6 +33,7 @@ const TaskItem = props => {
 		priority,
 		description,
 	} = props;
+
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [startTime, setStartTime] = useState(startTimeInput);
 	const [endTime, setEndTime] = useState(endTimeInput);
