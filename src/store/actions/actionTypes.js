@@ -1,4 +1,6 @@
 export const START_TIMER = 'START_TIMER';
 export const PAUSE_TIMER = 'PAUSE_TIMER';
 export const STOP_TIMER = 'STOP_TIMER';
-export const TICK = 'TICK';
+export const FETCH_TASKS_START = 'FETCH_TASKS_START';
+export const FETCH_TASKS_SUCCESS = 'FETCH_TASKS_SUCCESS';
+export const FETCH_TASKS_FAIL = 'FETCH_TASKS_FAIL';

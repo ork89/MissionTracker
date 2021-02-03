@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
+import { applyMiddleware, createStore, compose } from 'redux';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import App from './App';
-import timerReducer from './store/reducers/timerReducer';
-import projectsReducer from './store/reducers/projectsReducer';
+import allReducers from './store/reducers';
 
 import './index.css';
 
@@ -33,12 +32,7 @@ const composeEnhancers =
 	(process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) ||
 	compose;
 
-const rootReducer = combineReducers({
-	timer: timerReducer,
-	projects: projectsReducer,
-});
-
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+const store = createStore(allReducers, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
 	<ThemeProvider theme={theme}>
