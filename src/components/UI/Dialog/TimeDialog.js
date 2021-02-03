@@ -7,8 +7,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Chip from '@material-ui/core/Chip';
-import SelectInput from '../Input/SelectInput';
 import { makeStyles } from '@material-ui/core/styles';
+import { InputLabel } from '@material-ui/core';
+import SelectInput from '../Input/SelectInput';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -49,7 +50,7 @@ const TimeDialog = props => {
 	} = props;
 
 	useEffect(() => {
-		const time = value.toString();
+		const time = value !== undefined ? value.toString() : '00:00:00';
 		setHoursValue(time.substring(0, 2));
 		setMinutesValue(time.substring(3, 5));
 		setSecondsValue(time.substring(6, 8));
@@ -67,8 +68,8 @@ const TimeDialog = props => {
 		setHoursValue(event.target.value);
 	};
 
-	const handleSelectedValue = value => {
-		setTimeDurationOperator(value);
+	const handleSelectedValue = operatorValue => {
+		setTimeDurationOperator(operatorValue);
 	};
 
 	const handleClickOpen = () => {
@@ -85,7 +86,7 @@ const TimeDialog = props => {
 	};
 
 	const durationOptions = ['Longer', 'Shorter', 'equal'];
-	let uid = Math.floor(Math.random(key) * 1000);
+	const uid = Math.floor(Math.random(key) * 1000);
 
 	return (
 		<div>
@@ -114,7 +115,8 @@ const TimeDialog = props => {
 					<DialogContentText>{dialogContent}</DialogContentText>
 					{origin !== undefined ? (
 						<div>
-							<label htmlFor='selectInput-for-TimeDialog'>Operator</label>
+							{/* <label htmlFor='selectInput-for-TimeDialog'>Operator</label> */}
+							<InputLabel id='selectInput-for-TimeDialog'>Operator</InputLabel>
 							<SelectInput
 								id='selectInput-for-TimeDialog'
 								selectId={uid}

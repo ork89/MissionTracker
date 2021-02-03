@@ -15,6 +15,27 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 
+const useStyles = makeStyles(theme => ({
+	root: {
+		display: 'flex',
+		flexGrow: 1,
+		maxWidth: 752,
+		padding: 0,
+	},
+	list: {
+		backgroundColor: theme.palette.background.paper,
+	},
+	title: {
+		margin: theme.spacing(2),
+	},
+	container: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+}));
+
 const FormDialog = props => {
 	const [open, setOpen] = useState(false);
 	const { dialogTitle, variant, color, btnOpenLabel } = props;
@@ -57,28 +78,8 @@ const FormDialog = props => {
 
 	const handleListItemClick = id => {
 		setSelectedIndex(id);
+		props.selectedProject(projects[id].name);
 	};
-
-	const useStyles = makeStyles(theme => ({
-		root: {
-			display: 'flex',
-			flexGrow: 1,
-			maxWidth: 752,
-			padding: 0,
-		},
-		list: {
-			backgroundColor: theme.palette.background.paper,
-		},
-		title: {
-			margin: theme.spacing(2),
-		},
-		container: {
-			display: 'flex',
-			flexDirection: 'row',
-			alignItems: 'center',
-			justifyContent: 'center',
-		},
-	}));
 
 	const classes = useStyles();
 

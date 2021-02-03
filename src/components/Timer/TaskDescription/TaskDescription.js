@@ -26,9 +26,18 @@ const useStyles = makeStyles(theme => ({
 const TaskDescription = props => {
 	const classes = useStyles();
 
+	const handleChange = event => {
+		props.input(event.target.value);
+	};
+
 	return (
 		<div className={classes.root}>
-			<TextField id='taskDescription' label='Give your task a description' size='medium' />
+			<TextField
+				id='taskDescription'
+				label='Task description'
+				size='medium'
+				onChange={handleChange}
+			/>
 		</div>
 	);
 };

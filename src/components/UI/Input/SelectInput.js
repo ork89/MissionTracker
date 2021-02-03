@@ -28,23 +28,24 @@ const BootstrapInput = withStyles(theme => ({
 }))(InputBase);
 
 const SelectInput = props => {
-	const { defaultValue, inputOptions, selectId } = props;
+	const { defaultValue, inputOptions, selectId, id } = props;
 	const [selectedInputValue, setSelectedInputValue] = useState(defaultValue);
-	let uid = Math.floor(Math.random(selectId) * 1000);
+	const uid = Math.floor(Math.random(selectId) * 1000);
 
 	const handleChange = event => {
-		setSelectedInputValue(event.target.value);
-		const value = event.target.value;
+		const newSelectedValue = event.target.value;
+		setSelectedInputValue(newSelectedValue);
 
-		props.selectedValue(value);
+		props.selectedValue(newSelectedValue);
 	};
 
 	const options = inputOptions != null ? Object.values(inputOptions) : [];
 
 	return (
-		<React.Fragment>
+		<>
 			<Select
 				key={selectId}
+				labelId={id}
 				id={`priority-select_${selectId}`}
 				value={selectedInputValue}
 				onChange={handleChange}
@@ -57,7 +58,7 @@ const SelectInput = props => {
 					);
 				})}
 			</Select>
-		</React.Fragment>
+		</>
 	);
 };
 
