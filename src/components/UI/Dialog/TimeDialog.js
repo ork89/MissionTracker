@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,8 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
-import { InputLabel } from '@material-ui/core';
-import SelectInput from '../Input/SelectInput';
+import { FormControl, Select, TextField, InputLabel } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -29,12 +28,11 @@ const useStyles = makeStyles(theme => ({
 const TimeDialog = props => {
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
-	const [seconds, setSecondsValue] = useState();
-	const [minutes, setMinutesValue] = useState();
-	const [hours, setHoursValue] = useState();
+	const [seconds, setSecondsValue] = useState('00');
+	const [minutes, setMinutesValue] = useState('00');
+	const [hours, setHoursValue] = useState('00');
 	const [timeDurationOperator, setTimeDurationOperator] = useState('Longer');
 	const {
-		value,
 		btnOpenLabel,
 		variant,
 		color,
@@ -44,17 +42,15 @@ const TimeDialog = props => {
 		minutesTextFieldLabel,
 		hoursTextFieldLabel,
 		textFieldType,
-		key,
 		origin,
 		chipIcon,
 	} = props;
 
-	useEffect(() => {
-		const time = value !== undefined ? value.toString() : '00:00:00';
-		setHoursValue(time.substring(0, 2));
-		setMinutesValue(time.substring(3, 5));
-		setSecondsValue(time.substring(6, 8));
-	}, [value]);
+	function initDialogFields() {
+		setSecondsValue('00');
+		setMinutesValue('00');
+		setHoursValue('00');
+	}
 
 	const handleChangeInSeconds = event => {
 		setSecondsValue(event.target.value);
@@ -68,8 +64,8 @@ const TimeDialog = props => {
 		setHoursValue(event.target.value);
 	};
 
-	const handleSelectedValue = operatorValue => {
-		setTimeDurationOperator(operatorValue);
+	const handleSelectedValue = event => {
+		setTimeDurationOperator(event.target.value);
 	};
 
 	const handleClickOpen = () => {
@@ -83,10 +79,10 @@ const TimeDialog = props => {
 	const handleSave = () => {
 		props.setTime(minutes, hours, seconds, timeDurationOperator);
 		setOpen(false);
+		initDialogFields();
 	};
 
 	const durationOptions = ['Longer', 'Shorter', 'equal'];
-	const uid = Math.floor(Math.random(key) * 1000);
 
 	return (
 		<div>
@@ -110,20 +106,31 @@ const TimeDialog = props => {
 				open={open}
 				onClose={handleClose}
 				aria-labelledby={`form-dialog-${dialogTitle}`}>
-				<DialogTitle id={`${key}-dialog`}>{dialogTitle}</DialogTitle>
+				<DialogTitle id={`dialogTitle_${dialogTitle}`}>{dialogTitle}</DialogTitle>
 				<DialogContent>
 					<DialogContentText>{dialogContent}</DialogContentText>
 					{origin !== undefined ? (
 						<div>
-							{/* <label htmlFor='selectInput-for-TimeDialog'>Operator</label> */}
-							<InputLabel id='selectInput-for-TimeDialog'>Operator</InputLabel>
-							<SelectInput
-								id='selectInput-for-TimeDialog'
-								selectId={uid}
-								defaultValue=''
-								inputOptions={durationOptions}
-								selectedValue={handleSelectedValue}
-							/>
+							<InputLabel id='TimeDialog-select-input'>Operator</InputLabel>
+							<FormControl>
+								<Select
+									id='TimeDialog-select-input'
+									value={timeDurationOperator}
+									onChange={handleSelectedValue}
+									disableUnderline
+									inputProps={{ 'aria-label': 'Without label' }}>
+									{durationOptions.map(p => {
+										return (
+											<MenuItem
+												autoWidth
+												value={p}
+												key={`TimeDialog-select-input-${p}`}>
+												{p}
+											</MenuItem>
+										);
+									})}
+								</Select>
+							</FormControl>
 						</div>
 					) : null}
 					<div className={classes.container}>

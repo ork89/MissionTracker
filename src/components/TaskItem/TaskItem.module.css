@@ -1,11 +1,12 @@
 .TaskItem {
 	width: 100%;
-	height: 60px;
+	height: 70px;
 	margin: 0;
 	display: flex;
 	align-items: center;
 	box-shadow: 0 0 1px #a0a0a0;
 	position: relative;
+	justify-content: space-between;
 }
 
 .project {
@@ -14,37 +15,36 @@
 	color: #a0a0a0;
 }
 
-.description {
-	display: flex;
-	position: relative;
-	padding: 0 20px;
-	font-size: 20px;
-	text-align: start;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	align-items: center;
-}
-
 .details {
 	flex: 0 0 auto;
 	min-width: 250px;
 	position: relative;
-	display: inline;
-	margin-left: 10px;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+.detailsContainer {
+	display: flex;
+	flex-flow: row;
+	margin-left: auto;
+	align-items: center;
 }
 
 .container {
 	flex-flow: row;
-	justify-content: flex-start;
+	justify-content: flex-end;
 	align-items: center;
 	display: inline-flex;
+	margin-left: auto;
+}
+
+.priority {
+	margin-right: auto;
+	justify-content: flex-start;
+	margin-right: auto;
 }
 
 .timeControlsContainer {
-	flex-flow: row;
-	justify-content: flex-start;
-	align-items: center;
 	display: inline-flex;
 }
 
@@ -56,21 +56,8 @@
 	padding-left: 10px;
 }
 
-.priority {
-	position: relative;
-	display: flex;
-	flex: 0 2 auto;
-	margin-left: auto;
-	text-align: right;
-	padding-right: 20px;
-	overflow: hidden;
-	width: 100%;
-	min-width: 150px;
-}
-
 .optionsMenu {
-	margin: 0 20px 0 0;
-	justify-content: end;
+	margin: 0 0 0 auto;
 }
 
 @media (max-width: 640px) {

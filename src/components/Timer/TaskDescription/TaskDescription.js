@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,9 +24,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TaskDescription = props => {
+	const [inputText, setInputText] = useState('');
 	const classes = useStyles();
 
 	const handleChange = event => {
+		setInputText(event.target.value);
 		props.input(event.target.value);
 	};
 
@@ -37,6 +39,7 @@ const TaskDescription = props => {
 				label='Task description'
 				size='medium'
 				onChange={handleChange}
+				defaultValue={props.defaultValue}
 			/>
 		</div>
 	);

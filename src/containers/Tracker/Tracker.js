@@ -8,38 +8,7 @@ import classes from './Tracker.module.css';
 
 const Tracker = () => {
 	// TODO: Replace hardcoded tasks with tasks form the DB
-	const [tasksList, setTasksList] = useState([
-		// {
-		// 	id: 'aabbcc',
-		// 	description: 'This is the first task of the project',
-		// 	project: 'MissionTracker',
-		// 	startTime: '08:05:10',
-		// 	endTime: '09:34:44',
-		// 	totalTime: '01:29:34',
-		// 	date: new Date('2021-01-11T00:00:00'),
-		// 	priority: 'Low',
-		// },
-		// {
-		// 	id: 'ddeeff',
-		// 	description: 'Second Task',
-		// 	project: 'MissionTracker',
-		// 	startTime: '09:34:44',
-		// 	endTime: '10:02:39',
-		// 	totalTime: '00:27:55',
-		// 	date: new Date('2021-01-12T00:00:00'),
-		// 	priority: 'Low',
-		// },
-		// {
-		// 	id: 'gghhii',
-		// 	description: 'Third Task',
-		// 	project: 'MissionTracker',
-		// 	startTime: '10:02:39',
-		// 	endTime: '13:04:11',
-		// 	totalTime: '03:01:16',
-		// 	date: new Date('2021-01-12T00:00:00'),
-		// 	priority: 'Medium',
-		// },
-	]);
+	const [tasksList, setTasksList] = useState([]);
 
 	useEffect(() => {
 		axios
@@ -50,14 +19,8 @@ const Tracker = () => {
 				const entriesList = [];
 				const fetchedTasksObject = Object.entries(response.data);
 
-				fetchedTasksObject.forEach(el =>
-					entriesList.push({ ...response.data[el], id: el })
-				);
-
-				const updatedTaskList = [];
-				const fetchedTasks = fetchedTasksObject[0];
-				updatedTaskList.push(fetchedTasks[1]);
-				setTasksList(updatedTaskList);
+				fetchedTasksObject.forEach(el => entriesList.push({ id: el[0], ...el[1] }));
+				setTasksList(entriesList);
 			})
 			.catch(error => console.log(error))
 			.finally();

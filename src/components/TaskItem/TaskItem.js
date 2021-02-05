@@ -2,13 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import moment from 'moment';
 
 import { makeStyles } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
-import Menu from '@material-ui/core/Menu';
+import { FormControl, Select, TextField } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-import SelectInput from '../UI/Input/SelectInput';
 import DatePicker from '../UI/DatePicker/DatePicker';
 import TimeDialog from '../UI/Dialog/TimeDialog';
 
@@ -18,6 +17,23 @@ const useStyles = makeStyles(theme => ({
 	margin: {
 		margin: theme.spacing(3),
 		width: 'inherit',
+	},
+	underLine: {
+		'& .MuiInput-underline:before': {
+			border: 'none',
+			borderBottom: 'none',
+		},
+		'& .MuiInput-underline:hover:before': {
+			borderBottom: 'none',
+		},
+		'& .MuiInput-underline:after': {
+			borderBottom: 'none',
+		},
+		'&:hover': {
+			borderBottom: 'none',
+		},
+		minWidth: '150px',
+		maxWidth: '200px',
 	},
 }));
 
@@ -38,7 +54,7 @@ const TaskItem = props => {
 	const [startTime, setStartTime] = useState(startTimeInput);
 	const [endTime, setEndTime] = useState(endTimeInput);
 	const [totalTime, setTotalTime] = useState(totalTimeInput);
-	const [inputSelectedValue, setInputSelectedValue] = useState();
+	const [, setInputSelectedValue] = useState();
 
 	const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
@@ -88,6 +104,7 @@ const TaskItem = props => {
 	};
 
 	const handleSelectedValue = value => {
+		console.log({ value });
 		setInputSelectedValue(value);
 	};
 
@@ -95,61 +112,88 @@ const TaskItem = props => {
 		<div className={classes.TaskItem}>
 			<DoubleArrowIcon style={{ fontSize: 12, color: '#A0A0A0', marginLeft: 10 }} />
 			<div className={classes.project}>{project}</div>
-			<div className={classes.description}>
-				<InputBase
-					className={styles.margin}
-					defaultValue={description}
-					inputProps={{ 'aria-label': 'naked' }}
-				/>
-			</div>
-			<SelectInput
-				selectId={Math.floor(Math.random(taskId) * 1000)}
-				defaultValue={priority}
-				inputOptions={priorities}
-				selectedValue={handleSelectedValue}
-			/>
-			<div className={classes.details}>
-				<div className={classes.container}>
-					<div className={classes.timeControlsContainer}>
-						<TimeDialog
-							dialogTitle='Start Time'
-							textFieldLabel='Start time'
-							textFieldType='text'
-							btnOpenLabel={startTime}
-							value={startTime}
-							setTime={updateStartTime}
-						/>
-						<TimeDialog
-							dialogTitle='End Time'
-							textFieldLabel='End time'
-							textFieldType='text'
-							btnOpenLabel={endTime}
-							value={endTime}
-							setTime={updateEndTime}
-						/>
-					</div>
-					<p className={classes.time}>{totalTime}</p>
-					<DatePicker date={date} uid={taskId} />
-				</div>
-			</div>
-			<div className={classes.optionsMenu}>
-				<IconButton
-					aria-label='taskOptions'
-					aria-controls='options-menu'
-					aria-haspopup='true'
-					onClick={handleClick}>
-					<MoreVertIcon fontSize='small' />
-				</IconButton>
 
-				<Menu
-					id='options-menu'
-					anchorEl={anchorEl}
-					keepMounted
-					open={Boolean(anchorEl)}
-					onClose={handleClose}>
-					<MenuItem onClick={handleClose}>Duplicate to another project</MenuItem>
-					<MenuItem onClick={handleDelete}>Delete</MenuItem>
-				</Menu>
+			{/* ---Description--- */}
+			<TextField
+				defaultValue={description}
+				disableUnderline
+				className={styles.underLine}
+				style={{ margin: '20px', overflow: 'hidden' }}
+				inputProps={{ 'aria-label': 'naked' }}
+			/>
+
+			<div className={classes.detailsContainer}>
+				{/* ---Priority--- */}
+				<div className={classes.priority}>
+					<FormControl>
+						<Select
+							id='TaskItem-select-input'
+							value={priority}
+							onChange={handleSelectedValue}
+							disableUnderline
+							inputProps={{ 'aria-label': 'Without label' }}>
+							{priorities.map(p => {
+								return (
+									<MenuItem
+										autoWidth='true'
+										value={p}
+										key={`TaskItem-select-input-${p}`}>
+										{p}
+									</MenuItem>
+								);
+							})}
+						</Select>
+					</FormControl>
+				</div>
+
+				<div className={classes.details}>
+					<div className={classes.container}>
+						{/* ---Start and End Time--- */}
+						<div className={classes.timeControlsContainer}>
+							<TimeDialog
+								dialogTitle='Start Time'
+								textFieldLabel='Start time'
+								textFieldType='text'
+								btnOpenLabel={startTime}
+								value={startTime}
+								setTime={updateStartTime}
+							/>
+							<TimeDialog
+								dialogTitle='End Time'
+								textFieldLabel='End time'
+								textFieldType='text'
+								btnOpenLabel={endTime}
+								value={endTime}
+								setTime={updateEndTime}
+							/>
+						</div>
+						<p className={classes.time}>{totalTime}</p>
+
+						{/* ---Date--- */}
+						<DatePicker date={date} uid={taskId} />
+					</div>
+				</div>
+
+				{/* ---Tasks options menu--- */}
+				<div className={classes.optionsMenu}>
+					<IconButton
+						aria-label='taskOptions'
+						aria-controls='options-menu'
+						aria-haspopup='true'
+						onClick={handleClick}>
+						<MoreVertIcon fontSize='small' />
+					</IconButton>
+
+					<Menu
+						id='options-menu'
+						anchorEl={anchorEl}
+						keepMounted
+						open={Boolean(anchorEl)}
+						onClose={handleClose}>
+						<MenuItem onClick={handleClose}>Duplicate to another project</MenuItem>
+						<MenuItem onClick={handleDelete}>Delete</MenuItem>
+					</Menu>
+				</div>
 			</div>
 		</div>
 	);

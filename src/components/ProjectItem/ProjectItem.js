@@ -1,61 +1,112 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MuiInput from '../UI/Input/MuiInput';
-import SelectInput from '../UI/Input/SelectInput';
+import { FormControl, Select } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import IconButton from '@material-ui/core/IconButton';
 import classes from './ProjectItem.module.css';
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		'& > *': {
 			margin: theme.spacing(1),
-			width: '15ch',
+			width: '19ch',
+			verticalAlign: 'bottom',
 		},
 		'& .MuiInput-underline:before': {
 			display: 'none',
 		},
 	},
+	totalTimeInput: { width: '15ch' },
 }));
 
 const ProjectItem = props => {
 	const styles = useStyles();
-	const [selectedOption, setSelectedOption] = useState();
-	const statusOptions = ['Created', 'In-Progress', 'Postponed', 'Done'];
 	const { projectName, totalTime, client, status, projectId } = props;
+	const [selectedOption, setSelectedOption] = useState(status);
+	const [anchorEl, setAnchorEl] = useState(null);
+	const statusOptions = ['Created', 'In-Progress', 'Postponed', 'Done'];
 
-	const handleSelectedValue = value => {
-		setSelectedOption(value);
+	const handleSelectedValue = event => {
+		setSelectedOption(event.target.value);
+	};
+
+	const handleClick = event => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	const handleDelete = id => {
+		props.deleteItem(id);
+		setAnchorEl(null);
 	};
 
 	return (
 		<div className={classes.ProjectItem}>
 			<div className={classes.container}>
 				<form className={styles.root} noValidate autoComplete='off'>
-					<MuiInput
-						id={`${projectId} name`}
+					<TextField
+						id={`project-name-projectId-${projectId}`}
 						label='Project name'
-						size='small'
+						size='medium'
 						value={projectName}
 					/>
-					<MuiInput
-						id={`${projectId} totalTime`}
+					<TextField
+						id={`total-time-projectId-${projectId}`}
 						label='Total Time'
 						size='small'
+						className={styles.totalTimeInput}
 						value={totalTime}
 					/>
-					<MuiInput
-						id={`${projectId} client`}
+					<TextField
+						id={`client-projectId-${projectId}`}
 						label='Client'
 						size='small'
 						value={client}
 					/>
-
-					<SelectInput
-						selectId={Math.floor(Math.random(projectId) * 1000)}
-						defaultValue={status}
-						inputOptions={statusOptions}
-						selectedValue={handleSelectedValue}
-					/>
+					<FormControl>
+						<Select
+							id='ProjectItem-select-input'
+							value={selectedOption}
+							onChange={handleSelectedValue}
+							disableUnderline>
+							{statusOptions.map(p => {
+								return (
+									<MenuItem
+										autoWidth='true'
+										value={p}
+										key={`ProjectItem-select-input-${projectId}`}>
+										{p}
+									</MenuItem>
+								);
+							})}
+						</Select>
+					</FormControl>
 				</form>
+				{/* ---Tasks options menu--- */}
+				<div className={classes.optionsMenu}>
+					<IconButton
+						aria-label='taskOptions'
+						aria-controls='options-menu'
+						aria-haspopup='true'
+						onClick={handleClick}>
+						<MoreVertIcon fontSize='small' />
+					</IconButton>
+
+					<Menu
+						id={`options-menu-for-projectId-${projectId}`}
+						anchorEl={anchorEl}
+						keepMounted
+						open={Boolean(anchorEl)}
+						onClose={handleClose}>
+						<MenuItem onClick={handleDelete}>Delete</MenuItem>
+					</Menu>
+				</div>
 			</div>
 		</div>
 	);

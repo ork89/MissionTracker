@@ -43,18 +43,19 @@ const FormDialog = props => {
 	const [projects, setProjects] = useState([
 		{
 			id: 1,
-			name: 'IncoMaster',
-			totalTime: '76:12:19',
-			client: 'Ori M. K.',
-			status: 'Done',
-		},
-		{
-			id: 2,
 			name: 'MissionTracker',
 			totalTime: '04:58:45',
 			client: 'Ori M. K.',
 			status: 'inprogress',
 		},
+		{
+			id: 2,
+			name: 'IncoMaster',
+			totalTime: '76:12:19',
+			client: 'Ori M. K.',
+			status: 'Done',
+		},
+
 		{
 			id: 3,
 			name: 'Portfolio',
@@ -105,6 +106,7 @@ const FormDialog = props => {
 									<ListItem
 										key={proj.id}
 										button
+										defaultValue={props.defaultValue}
 										selected={selectedIndex === index}
 										onClick={event => handleListItemClick(index)}>
 										<ListItemIcon>

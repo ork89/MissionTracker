@@ -1,28 +1,44 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import axios from '../../axios';
-
+import { useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import { FormControl, Select, TextField } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
 import Timer from '../../components/Timer/Timer';
 import TimerControls from '../../components/Timer/TimerControls/TimerControls';
-import TaskDescription from '../../components/Timer/TaskDescription/TaskDescription';
-import SelectInput from '../../components/UI/Input/SelectInput';
 import ProjectDialog from '../../components/UI/Dialog/ProjectDialog';
 import { startTimer, stopTimer, pauseTimer } from '../../store/actions/trackerActions';
+import axios from '../../axios';
 import classes from './Task.module.css';
 
+const useStyles = makeStyles(() => ({
+	underLine: {
+		display: 'flex',
+		'& .MuiInput-underline:before': {
+			border: 'none',
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
+		'& .MuiInputLabel-formControl': {
+			position: 'relative',
+		},
+	},
+}));
+
 let incrementor;
+let endTime = '00:00:00';
 
 const Task = () => {
+	const styles = useStyles();
 	const [secondsElapsed, setSecondsElapsed] = useState(0);
 	const [isStarted, setIsStarted] = useState(false);
-	const [startTime, setStartTime] = useState('');
-	const [endTime, setEndTime] = useState('');
-	const [inputSelectedValue, setInputSelectedValue] = useState();
+	const [startTime, setStartTime] = useState('00:00:00');
 	const [description, setDescription] = useState('');
-	const [selectedProjectName, setSelectedProjectName] = useState('');
-	const dispatch = useDispatch();
+	// TODO: get a list of projects from the DB and instantiate 'selectedProjectName' with the first one.
+	const [selectedProjectName, setSelectedProjectName] = useState('MissionTracker');
 
 	const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
+	const [inputSelectedValue, setInputSelectedValue] = useState(priorities[1]);
+	const dispatch = useDispatch();
 
 	const getSeconds = () => {
 		return `0${Math.floor(secondsElapsed % 60)}`.slice(-2);
@@ -39,8 +55,10 @@ const Task = () => {
 	const createNewTaskInDB = () => {
 		const currentTime = `${getHours()}:${getMinutes()}:${getSeconds()}`;
 
+		console.log(inputSelectedValue);
+
 		const newTask = {
-			desc: description,
+			description,
 			startTime,
 			endTime,
 			totalTime: currentTime,
@@ -52,9 +70,12 @@ const Task = () => {
 				email: 'test@test.com',
 			},
 		};
+
 		axios
 			.post('/tasks.json', newTask)
-			.then(response => console.log(response))
+			.then(response => {
+				console.log(response);
+			})
 			.catch(error => console.log(error));
 	};
 
@@ -62,7 +83,7 @@ const Task = () => {
 		setIsStarted(true);
 		const dateTime = new Date();
 		const localStartTime = dateTime.toLocaleTimeString();
-		setStartTime(localStartTime);
+		setStartTime(localStartTime.slice(0, localStartTime.length - 2));
 		dispatch(startTimer());
 
 		incrementor = setInterval(() => {
@@ -76,23 +97,24 @@ const Task = () => {
 	};
 
 	const timerStoppedHandler = () => {
-		clearInterval(incrementor);
-		setSecondsElapsed(0);
 		setIsStarted(false);
-		dispatch(stopTimer());
-
 		const dateTime = new Date();
 		const localEndTime = dateTime.toLocaleTimeString();
-		setEndTime(localEndTime);
+		endTime = localEndTime.slice(0, localEndTime.length - 2);
+
+		clearInterval(incrementor);
+		setSecondsElapsed(0);
+		dispatch(stopTimer());
+
 		createNewTaskInDB();
 	};
 
-	const handleSelectedValue = value => {
-		setInputSelectedValue(value);
+	const handleSelectedValue = event => {
+		setInputSelectedValue(event.target.value);
 	};
 
-	const handleDescriptionChanged = input => {
-		setDescription(input);
+	const handleDescriptionChanged = event => {
+		setDescription(event.target.value);
 	};
 
 	const handleProjectSelected = projectName => {
@@ -108,14 +130,40 @@ const Task = () => {
 				timerStopped={timerStoppedHandler}
 				disabled={!isStarted}
 			/>
-			<TaskDescription input={handleDescriptionChanged} />
-			<div className={classes.projectAndPriority}>
-				<SelectInput
-					defaultValue='Low'
-					inputOptions={priorities}
-					selectedValue={handleSelectedValue}
+
+			{/* ---Description--- */}
+			<FormControl>
+				<TextField
+					label='Task description'
+					disableUnderline
+					className={styles.underLine}
+					style={{ justifyContent: 'center' }}
+					onChange={handleDescriptionChanged}
+					inputProps={{ 'aria-label': 'naked' }}
 				/>
-				<ProjectDialog selectedProject={handleProjectSelected} />
+			</FormControl>
+
+			{/* ---Project selection dialog--- */}
+			<div className={classes.projectAndPriority}>
+				<FormControl>
+					<Select
+						value={inputSelectedValue}
+						onChange={handleSelectedValue}
+						disableUnderline
+						inputProps={{ 'aria-label': 'Without label' }}>
+						{priorities.map(p => {
+							return (
+								<MenuItem value={p} key={`project-select-${p}`}>
+									{p}
+								</MenuItem>
+							);
+						})}
+					</Select>
+				</FormControl>
+				<ProjectDialog
+					selectedProject={handleProjectSelected}
+					defaultValue={selectedProjectName}
+				/>
 			</div>
 		</div>
 	);
