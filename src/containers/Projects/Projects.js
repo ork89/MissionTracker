@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FolderIcon from '@material-ui/icons/FolderSpecial';
 import Chip from '@material-ui/core/Chip';
 import FaceIcon from '@material-ui/icons/Face';
@@ -12,11 +12,14 @@ import classes from './Projects.module.css';
 import FilterDialog from '../../components/UI/Dialog/FilterDialog';
 import TimeDialog from '../../components/UI/Dialog/TimeDialog';
 import filterByDuration from '../../filters/DurationFilter';
+import axios from '../../axios';
 
 const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'center',
+		alignItems: 'center',
+		verticalAlign: 'bottom',
 		flexWrap: 'wrap',
 		'& > *': {
 			margin: theme.spacing(0.8),
@@ -25,32 +28,37 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Projects = () => {
-	const styles = useStyles();
-	// TODO: Create DB and replace hardcoded projects with projects from DB
-	const [projects, setProjects] = useState([
-		{
-			id: 1,
-			name: 'Example',
-			totalTime: '01:06:17',
-			client: 'Ori M. K.',
-			status: 'Done',
-		},
-		{
-			id: 2,
-			name: 'MissionTracker',
-			totalTime: '04:58:45',
-			client: 'Ori M. K.',
-			status: 'In-Progress',
-		},
-		{
-			id: 3,
-			name: 'Landing Page',
-			totalTime: '00:02:18',
-			client: 'Yossi Kosman',
-			status: 'Created',
-		},
-	]);
-	const [projectsList, setProjectsList] = useState([...projects]);
+	const styles = useStyles();	
+
+	const [projects, setProjects] = useState([]);
+	const [projectsList, setProjectsList] = useState([]);
+
+	useEffect(() => {
+		axios
+			.get(
+				'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/projects.json'
+			)
+			.then(response => {
+				const entriesList = [];
+				const fetchedProjectsObj = Object.entries(response.data);
+
+				fetchedProjectsObj.forEach(el => entriesList.push({ id: el[0], ...el[1] }));
+				setProjects(entriesList);
+				setProjectsList(entriesList);
+			})
+			.catch(error => console.log(error));
+	}, []);
+
+	function saveNewProjectInDB(newProject) {
+		axios
+			.post('/projects.json', newProject)
+			.then(response => {
+				const updatedProjectsList = [newProject, ...projects];
+				setProjects(updatedProjectsList);
+				setProjectsList(updatedProjectsList);
+			})
+			.catch(error => console.log(error));
+	}
 
 	const handleCreateProject = (projectName, clientName) => {
 		const newProject = {
@@ -61,15 +69,21 @@ const Projects = () => {
 			status: 'Created',
 		};
 
-		console.table(newProject);
-		const updatedProjectsList = [newProject, ...projects];
-		setProjectsList(updatedProjectsList);
+		saveNewProjectInDB(newProject);
+	};
+
+	const handleDelete = id => {
+		const newProjectsList = projectsList.filter(item => item.id !== id);
+		setProjectsList(newProjectsList);
 	};
 
 	const handleFilterList = (filter, type) => {
-		const updatedProjectsList = projects.filter(
-			proj => proj[type].toLowerCase().trim() === filter.toLowerCase().trim()
-		);
+		const updatedProjectsList = projects.filter(proj => {
+			return (
+				proj[type].toLowerCase().trim() === filter.toLowerCase().trim() ||
+				proj[type].toLowerCase().trim().includes(filter)
+			);
+		});
 		setProjectsList(updatedProjectsList);
 	};
 
@@ -187,6 +201,7 @@ const Projects = () => {
 						client={proj.client}
 						status={proj.status}
 						projectId={proj.id}
+						deleteItem={() => handleDelete(proj.id)}
 					/>
 				);
 			})}
