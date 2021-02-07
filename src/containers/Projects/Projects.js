@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import FolderIcon from '@material-ui/icons/FolderSpecial';
 import Chip from '@material-ui/core/Chip';
 import FaceIcon from '@material-ui/icons/Face';
@@ -11,8 +13,9 @@ import CreateProjectDialog from '../../components/UI/Dialog/CreateProjectDialog'
 import classes from './Projects.module.css';
 import FilterDialog from '../../components/UI/Dialog/FilterDialog';
 import TimeDialog from '../../components/UI/Dialog/TimeDialog';
-import filterByDuration from '../../filters/DurationFilter';
-import axios from '../../axios';
+import filterByDuration from '../../helpers/DurationFilter';
+import { fetchProjects, saveProjectInDB } from '../../store/actions/projectsActions';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -28,48 +31,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Projects = () => {
-	const styles = useStyles();	
-
-	const [projects, setProjects] = useState([]);
-	const [projectsList, setProjectsList] = useState([]);
+	const styles = useStyles();
+	const fetchedProjects = useSelector(state => state.projects.projects);
+	const isLoading = useSelector(state => state.projects.loading);
+	const [projectsList, setProjectsList] = useState(fetchedProjects);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		axios
-			.get(
-				'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/projects.json'
-			)
-			.then(response => {
-				const entriesList = [];
-				const fetchedProjectsObj = Object.entries(response.data);
-
-				fetchedProjectsObj.forEach(el => entriesList.push({ id: el[0], ...el[1] }));
-				setProjects(entriesList);
-				setProjectsList(entriesList);
-			})
-			.catch(error => console.log(error));
+		dispatch(fetchProjects());
+		setProjectsList(fetchedProjects);
 	}, []);
 
-	function saveNewProjectInDB(newProject) {
-		axios
-			.post('/projects.json', newProject)
-			.then(response => {
-				const updatedProjectsList = [newProject, ...projects];
-				setProjects(updatedProjectsList);
-				setProjectsList(updatedProjectsList);
-			})
-			.catch(error => console.log(error));
-	}
-
 	const handleCreateProject = (projectName, clientName) => {
-		const newProject = {
-			id: projects.length + 1,
-			name: projectName,
-			totalTime: '00:00:00',
-			client: clientName,
-			status: 'Created',
-		};
-
-		saveNewProjectInDB(newProject);
+		dispatch(saveProjectInDB(projectName, clientName));
 	};
 
 	const handleDelete = id => {
@@ -78,11 +52,8 @@ const Projects = () => {
 	};
 
 	const handleFilterList = (filter, type) => {
-		const updatedProjectsList = projects.filter(proj => {
-			return (
-				proj[type].toLowerCase().trim() === filter.toLowerCase().trim() ||
-				proj[type].toLowerCase().trim().includes(filter)
-			);
+		const updatedProjectsList = projectsList.filter(proj => {
+			return proj[type].toLowerCase().trim().includes(filter);
 		});
 		setProjectsList(updatedProjectsList);
 	};
@@ -94,7 +65,7 @@ const Projects = () => {
 		)
 			return;
 
-		const updatedList = projects.filter(item =>
+		const updatedList = projectsList.filter(item =>
 			filterByDuration(minutes, hours, operator, item.totalTime)
 		);
 
@@ -102,7 +73,7 @@ const Projects = () => {
 	};
 
 	const handleClearFilters = () => {
-		setProjectsList(projects);
+		setProjectsList(fetchedProjects);
 	};
 
 	const statusOptions = [
@@ -112,13 +83,32 @@ const Projects = () => {
 		{ type: 'Done' },
 	];
 
-	const nameOptions = projects.map(item => {
+	const nameOptions = projectsList.map(item => {
 		return { type: item.name };
 	});
 
-	const clientOptions = projects.map(item => {
+	const clientOptions = projectsList.map(item => {
 		return { type: item.client };
 	});
+
+	const listOfProjects = projectsList.length === 0 ? fetchedProjects : projectsList;
+	let projects = listOfProjects.map(proj => {
+		return (
+			<ProjectItem
+				key={proj.id}
+				projectName={proj.name}
+				totalTime={proj.totalTime}
+				client={proj.client}
+				status={proj.status}
+				projectId={proj.id}
+				deleteItem={() => handleDelete(proj.id)}
+			/>
+		);
+	});
+
+	if (isLoading) {
+		projects = <Spinner />;
+	}
 
 	return (
 		<>
@@ -192,19 +182,20 @@ const Projects = () => {
 			</div>
 
 			{/* ---Projects List--- */}
-			{projectsList.map(proj => {
-				return (
-					<ProjectItem
-						key={proj.id}
-						projectName={proj.name}
-						totalTime={proj.totalTime}
-						client={proj.client}
-						status={proj.status}
-						projectId={proj.id}
-						deleteItem={() => handleDelete(proj.id)}
-					/>
-				);
-			})}
+			{projects}
+			{/* {projectsList.map(proj => {
+					return (
+						<ProjectItem
+							key={proj.id}
+							projectName={proj.name}
+							totalTime={proj.totalTime}
+							client={proj.client}
+							status={proj.status}
+							projectId={proj.id}
+							deleteItem={() => handleDelete(proj.id)}
+						/>
+					);
+				})} */}
 		</>
 	);
 };

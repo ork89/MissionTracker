@@ -6,7 +6,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Timer from '../../components/Timer/Timer';
 import TimerControls from '../../components/Timer/TimerControls/TimerControls';
 import ProjectDialog from '../../components/UI/Dialog/ProjectDialog';
-import { startTimer, stopTimer, pauseTimer } from '../../store/actions/trackerActions';
+import {
+	startTimer,
+	stopTimer,
+	pauseTimer,
+	fetchTasksList,
+} from '../../store/actions/trackerActions';
 import axios from '../../axios';
 import classes from './Task.module.css';
 
@@ -26,6 +31,7 @@ const useStyles = makeStyles(() => ({
 
 let incrementor;
 let endTime = '00:00:00';
+const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
 const Task = () => {
 	const styles = useStyles();
@@ -35,8 +41,6 @@ const Task = () => {
 	const [description, setDescription] = useState('');
 	// TODO: get a list of projects from the DB and instantiate 'selectedProjectName' with the first one.
 	const [selectedProjectName, setSelectedProjectName] = useState('MissionTracker');
-
-	const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 	const [inputSelectedValue, setInputSelectedValue] = useState(priorities[1]);
 	const dispatch = useDispatch();
 
@@ -55,8 +59,6 @@ const Task = () => {
 	const createNewTaskInDB = () => {
 		const currentTime = `${getHours()}:${getMinutes()}:${getSeconds()}`;
 
-		console.log(inputSelectedValue);
-
 		const newTask = {
 			description,
 			startTime,
@@ -74,7 +76,8 @@ const Task = () => {
 		axios
 			.post('/tasks.json', newTask)
 			.then(response => {
-				console.log(response);
+				console.log(response.data);
+				dispatch(fetchTasksList());
 			})
 			.catch(error => console.log(error));
 	};

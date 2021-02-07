@@ -3,8 +3,8 @@ import trackerReducer from './trackerReducer';
 import projectsReducer from './projectsReducer';
 
 const allReducers = combineReducers({
-	tasksReduce: trackerReducer,
-	projectsReduce: projectsReducer,
+	tasks: trackerReducer,
+	projects: projectsReducer,
 });
 
 export default allReducers;

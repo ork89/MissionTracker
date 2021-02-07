@@ -1,40 +1,39 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import TaskItem from '../../components/TaskItem/TaskItem';
 import Task from '../Task/Task';
 import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { fetchTasksList } from '../../store/actions/trackerActions';
 import classes from './Tracker.module.css';
 
+const url = 'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/tasks';
+
 const Tracker = () => {
-	// TODO: Replace hardcoded tasks with tasks form the DB
-	const [tasksList, setTasksList] = useState([]);
+	const fetchedTasks = useSelector(state => state.tasks.tasks);
+	const isLoading = useSelector(state => state.tasks.loading);
+	console.log(fetchedTasks);
+	const [tasksList, setTasksList] = useState(fetchedTasks);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		axios
-			.get(
-				'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/tasks.json'
-			)
-			.then(response => {
-				const entriesList = [];
-				const fetchedTasksObject = Object.entries(response.data);
-
-				fetchedTasksObject.forEach(el => entriesList.push({ id: el[0], ...el[1] }));
-				setTasksList(entriesList);
-			})
-			.catch(error => console.log(error))
-			.finally();
+		dispatch(fetchTasksList());
+		setTasksList(fetchedTasks);
 	}, []);
 
 	const handleDelete = id => {
-		const newTasksList = tasksList.filter(item => item.id !== id);
-		setTasksList(newTasksList);
+		axios
+			.delete(`${url}/${id}.json`)
+			.then(dispatch(fetchTasksList()))
+			.catch(error => console.log(error));
 	};
 
 	let tasks = <Spinner />;
 
-	if (tasksList) {
-		tasks = tasksList.map(task => (
+	if (!isLoading) {
+		const listOfTasks = tasksList.length === 0 ? fetchedTasks : tasksList;
+		tasks = listOfTasks.map(task => (
 			<TaskItem
 				key={Math.floor(Math.random() * 10000)}
 				taskId={task.id}

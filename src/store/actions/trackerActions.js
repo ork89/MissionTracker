@@ -1,4 +1,5 @@
 import * as actions from './actionTypes';
+import axios from '../../axios';
 
 export const fetchTasksStart = () => {
 	return {
@@ -35,5 +36,24 @@ export const pauseTimer = () => {
 export const stopTimer = () => {
 	return {
 		type: actions.STOP_TIMER,
+	};
+};
+
+export const fetchTasksList = () => {
+	return dispatch => {
+		dispatch(fetchTasksStart());
+		axios
+			.get(
+				'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/tasks.json'
+			)
+			.then(response => {
+				const fetchedTasks = [];
+				const fetchedTasksObject = Object.entries(response.data);
+
+				fetchedTasksObject.forEach(el => fetchedTasks.push({ ...el[1], id: el[0] }));
+				console.log({ fetchedTasks });
+				dispatch(fetchTasksSuccess(fetchedTasks));
+			})
+			.catch(error => dispatch(fetchTasksFail(error)));
 	};
 };
