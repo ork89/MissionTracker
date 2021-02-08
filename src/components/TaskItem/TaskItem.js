@@ -32,9 +32,7 @@ const useStyles = makeStyles(theme => ({
 		'&:hover': {
 			borderBottom: 'none',
 		},
-		'& .MuiInputLabel-formControl': {
-			marginTop: '8px',
-		},
+		
 		marginTop: '8px',
 		minWidth: '150px',
 		maxWidth: '200px',

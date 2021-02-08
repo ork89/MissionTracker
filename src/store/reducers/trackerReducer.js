@@ -2,9 +2,6 @@ import * as actionTypes from '../actions/actionTypes';
 import updateObject from '../../shared/utility';
 
 const initialState = {
-	started: false,
-	paused: false,
-	stopped: false,
 	tasks: [],
 	loading: false,
 };
@@ -26,31 +23,31 @@ const fetchTasksFail = (state, action) => {
 	});
 };
 
-const startTimer = (state, action) => {
-	const updatedState = {
-		started: true,
-	};
-
-	return updateObject(state, updatedState);
+const saveNewTaskStart = (state, action) => {
+	return updateObject(state, { loading: true });
 };
 
-const pauseTimer = (state, action) => {
-	const updatedState = {
-		started: false,
-		paused: true,
-	};
-
-	return updateObject(state, updatedState);
+const saveNewTaskSuccess = (state, action) => {
+	const newTask = updateObject(action.newTask, { id: action.id });
+	return updateObject(state, {
+		loading: false,
+		tasks: state.tasks.concat(newTask),
+	});
 };
 
-const stopTimer = (state, action) => {
-	const updatedState = {
-		started: false,
-		paused: false,
-		stopped: true,
-	};
+const saveNewTaskFailed = (state, action) => {
+	return updateObject(state, { loading: false });
+};
 
-	return updateObject(state, updatedState);
+const deleteTaskStart = (state, action) => {
+	return updateObject(state, { loading: true });
+};
+const deleteTaskSuccess = (state, action) => {
+	const updatedTasksList = state.tasks.filter((item, id) => id !== action.id);
+	return updateObject(state, { tasks: updatedTasksList });
+};
+const deleteTaskFailed = (state, action) => {
+	return updateObject(state, { loading: true });
 };
 
 const tasksReducer = (state = initialState, action) => {
@@ -61,13 +58,18 @@ const tasksReducer = (state = initialState, action) => {
 			return fetchTasksSuccess(state, action);
 		case actionTypes.FETCH_TASKS_FAIL:
 			return fetchTasksFail(state, action);
-		case actionTypes.START_TIMER:
-			return startTimer(state, action);
-		case actionTypes.PAUSE_TIMER:
-			return pauseTimer(state, action);
-		case actionTypes.STOP_TIMER:
-			return stopTimer(state, action);
-
+		case actionTypes.SAVE_NEW_TASK_START:
+			return saveNewTaskStart(state, action);
+		case actionTypes.SAVE_NEW_PROJECT_SUCCESS:
+			return saveNewTaskSuccess(state, action);
+		case actionTypes.SAVE_NEW_TASK_FAILED:
+			return saveNewTaskFailed(state, action);
+		case actionTypes.DELETE_TASK_START:
+			return deleteTaskStart(state, action);
+		case actionTypes.DELETE_TASK_SUCCESS:
+			return deleteTaskSuccess(state, action);
+		case actionTypes.DELETE_TASK_FAILED:
+			return deleteTaskFailed(state, action);
 		default:
 			return state;
 	}

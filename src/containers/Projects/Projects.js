@@ -183,19 +183,6 @@ const Projects = () => {
 
 			{/* ---Projects List--- */}
 			{projects}
-			{/* {projectsList.map(proj => {
-					return (
-						<ProjectItem
-							key={proj.id}
-							projectName={proj.name}
-							totalTime={proj.totalTime}
-							client={proj.client}
-							status={proj.status}
-							projectId={proj.id}
-							deleteItem={() => handleDelete(proj.id)}
-						/>
-					);
-				})} */}
 		</>
 	);
 };
