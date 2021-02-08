@@ -1,58 +1,75 @@
-import React, { useState } from 'react';
 import * as actionTypes from '../actions/actionTypes';
 import updateObject from '../../shared/utility';
-import axios from '../../axios';
 
 const initialState = {
-	started: false,
-	paused: false,
-	stopped: false,
+	tasks: [],
+	loading: false,
 };
 
 const fetchTasksStart = (state, action) => {
-	const tasks = [];
+	return updateObject(state, { loading: true });
 };
 
-const startTimer = (state, action) => {
-	const updatedState = {
-		started: true,
-	};
-
-	return updateObject(state, updatedState);
+const fetchTasksSuccess = (state, action) => {
+	return updateObject(state, {
+		tasks: action.tasks,
+		loading: false,
+	});
 };
 
-const pauseTimer = (state, action) => {
-	const updatedState = {
-		started: false,
-		paused: true,
-	};
-
-	return updateObject(state, updatedState);
+const fetchTasksFail = (state, action) => {
+	return updateObject(state, {
+		loading: false,
+	});
 };
 
-const stopTimer = (state, action) => {
-	const updatedState = {
-		started: false,
-		paused: false,
-		stopped: true,
-	};
+const saveNewTaskStart = (state, action) => {
+	return updateObject(state, { loading: true });
+};
 
-	return updateObject(state, updatedState);
+const saveNewTaskSuccess = (state, action) => {
+	const newTask = updateObject(action.newTask, { id: action.id });
+	return updateObject(state, {
+		loading: false,
+		tasks: state.tasks.concat(newTask),
+	});
+};
+
+const saveNewTaskFailed = (state, action) => {
+	return updateObject(state, { loading: false });
+};
+
+const deleteTaskStart = (state, action) => {
+	return updateObject(state, { loading: true });
+};
+const deleteTaskSuccess = (state, action) => {
+	const updatedTasksList = state.tasks.filter((item, id) => id !== action.id);
+	return updateObject(state, { tasks: updatedTasksList });
+};
+const deleteTaskFailed = (state, action) => {
+	return updateObject(state, { loading: true });
 };
 
 const tasksReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case actionTypes.FETCH_TASKS_START:
 			return fetchTasksStart(state, action);
-		case actionTypes.START_TIMER:
-			return startTimer(state, action);
-
-		case actionTypes.PAUSE_TIMER:
-			return pauseTimer(state, action);
-
-		case actionTypes.STOP_TIMER:
-			return stopTimer(state, action);
-
+		case actionTypes.FETCH_TASKS_SUCCESS:
+			return fetchTasksSuccess(state, action);
+		case actionTypes.FETCH_TASKS_FAIL:
+			return fetchTasksFail(state, action);
+		case actionTypes.SAVE_NEW_TASK_START:
+			return saveNewTaskStart(state, action);
+		case actionTypes.SAVE_NEW_PROJECT_SUCCESS:
+			return saveNewTaskSuccess(state, action);
+		case actionTypes.SAVE_NEW_TASK_FAILED:
+			return saveNewTaskFailed(state, action);
+		case actionTypes.DELETE_TASK_START:
+			return deleteTaskStart(state, action);
+		case actionTypes.DELETE_TASK_SUCCESS:
+			return deleteTaskSuccess(state, action);
+		case actionTypes.DELETE_TASK_FAILED:
+			return deleteTaskFailed(state, action);
 		default:
 			return state;
 	}

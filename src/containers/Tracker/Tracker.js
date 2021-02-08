@@ -1,40 +1,29 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import TaskItem from '../../components/TaskItem/TaskItem';
 import Task from '../Task/Task';
-import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { fetchTasksList, deleteTask } from '../../store/actions/trackerActions';
 import classes from './Tracker.module.css';
 
 const Tracker = () => {
-	// TODO: Replace hardcoded tasks with tasks form the DB
-	const [tasksList, setTasksList] = useState([]);
+	const fetchedTasks = useSelector(state => state.tasks.tasks);
+	const isLoading = useSelector(state => state.tasks.loading);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		axios
-			.get(
-				'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/tasks.json'
-			)
-			.then(response => {
-				const entriesList = [];
-				const fetchedTasksObject = Object.entries(response.data);
-
-				fetchedTasksObject.forEach(el => entriesList.push({ id: el[0], ...el[1] }));
-				setTasksList(entriesList);
-			})
-			.catch(error => console.log(error))
-			.finally();
+		dispatch(fetchTasksList());
 	}, []);
 
 	const handleDelete = id => {
-		const newTasksList = tasksList.filter(item => item.id !== id);
-		setTasksList(newTasksList);
+		dispatch(deleteTask(id));
 	};
 
 	let tasks = <Spinner />;
 
-	if (tasksList) {
-		tasks = tasksList.map(task => (
+	if (!isLoading) {
+		tasks = fetchedTasks.map(task => (
 			<TaskItem
 				key={Math.floor(Math.random() * 10000)}
 				taskId={task.id}

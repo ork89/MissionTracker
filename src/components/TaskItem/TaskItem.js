@@ -32,6 +32,8 @@ const useStyles = makeStyles(theme => ({
 		'&:hover': {
 			borderBottom: 'none',
 		},
+		
+		marginTop: '8px',
 		minWidth: '150px',
 		maxWidth: '200px',
 	},
@@ -54,7 +56,7 @@ const TaskItem = props => {
 	const [startTime, setStartTime] = useState(startTimeInput);
 	const [endTime, setEndTime] = useState(endTimeInput);
 	const [totalTime, setTotalTime] = useState(totalTimeInput);
-	const [, setInputSelectedValue] = useState();
+	const [inputSelectedValue, setInputSelectedValue] = useState(priority);
 
 	const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
@@ -103,9 +105,8 @@ const TaskItem = props => {
 		setEndTime(`${hours}:${minutes}:${seconds}`);
 	};
 
-	const handleSelectedValue = value => {
-		console.log({ value });
-		setInputSelectedValue(value);
+	const handleSelectedValue = event => {
+		setInputSelectedValue(event.target.value);
 	};
 
 	return (
@@ -128,7 +129,7 @@ const TaskItem = props => {
 					<FormControl>
 						<Select
 							id='TaskItem-select-input'
-							value={priority}
+							value={inputSelectedValue}
 							onChange={handleSelectedValue}
 							disableUnderline
 							inputProps={{ 'aria-label': 'Without label' }}>
