@@ -97,6 +97,7 @@ const Task = () => {
 
 		clearInterval(incrementor);
 		setSecondsElapsed(0);
+		setDescription('');
 
 		createNewTaskInDB();
 	};
@@ -130,6 +131,7 @@ const Task = () => {
 					disableUnderline
 					className={styles.underLine}
 					style={{ justifyContent: 'center' }}
+					value={description}
 					onChange={handleDescriptionChanged}
 					inputProps={{ 'aria-label': 'naked' }}
 				/>

@@ -43,8 +43,11 @@ const deleteTaskStart = (state, action) => {
 	return updateObject(state, { loading: true });
 };
 const deleteTaskSuccess = (state, action) => {
-	const updatedTasksList = state.tasks.filter((item, id) => id !== action.id);
-	return updateObject(state, { tasks: updatedTasksList });
+	const updatedTasksList = state.tasks.filter((item, id) => {
+		return item.id !== action.id;
+	});
+
+	return updateObject(state, { tasks: updatedTasksList, loading: false });
 };
 const deleteTaskFailed = (state, action) => {
 	return updateObject(state, { loading: true });
@@ -60,7 +63,7 @@ const tasksReducer = (state = initialState, action) => {
 			return fetchTasksFail(state, action);
 		case actionTypes.SAVE_NEW_TASK_START:
 			return saveNewTaskStart(state, action);
-		case actionTypes.SAVE_NEW_PROJECT_SUCCESS:
+		case actionTypes.SAVE_NEW_TASK_SUCCESS:
 			return saveNewTaskSuccess(state, action);
 		case actionTypes.SAVE_NEW_TASK_FAILED:
 			return saveNewTaskFailed(state, action);

@@ -62,19 +62,18 @@ export const deleteTaskFailed = error => {
 	};
 };
 
+const url = 'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/tasks';
+
 export const fetchTasksList = () => {
 	return dispatch => {
 		dispatch(fetchTasksStart());
 		axios
-			.get(
-				'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/tasks.json'
-			)
+			.get(`${url}.json`)
 			.then(response => {
 				const fetchedTasks = [];
 				const fetchedTasksObject = Object.entries(response.data);
-
 				fetchedTasksObject.forEach(el => fetchedTasks.push({ ...el[1], id: el[0] }));
-				console.log({ fetchedTasks });
+
 				dispatch(fetchTasksSuccess(fetchedTasks));
 			})
 			.catch(error => dispatch(fetchTasksFail(error)));
@@ -93,7 +92,6 @@ export const createNewTask = newTask => {
 	};
 };
 
-const url = 'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/tasks';
 export const deleteTask = id => {
 	return dispatch => {
 		dispatch(deleteTaskStart());
