@@ -1,5 +1,6 @@
 import * as actions from './actionTypes';
 import axios from '../../axios';
+import totalProjectTimeCalc from '../../helpers/TotalProjectTimeCalc';
 
 export const fetchTasksStart = () => {
 	return {
@@ -63,6 +64,8 @@ export const deleteTaskFailed = error => {
 };
 
 const url = 'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/tasks';
+const projectsUrl =
+	'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/projects';
 
 export const fetchTasksList = () => {
 	return dispatch => {
@@ -80,12 +83,36 @@ export const fetchTasksList = () => {
 	};
 };
 
+const doUpdate = (updatedTotalTime, id) => {
+	axios
+		.patch(`${projectsUrl}/${id}.json`, { totalTime: updatedTotalTime })
+		.then(res => console.log(res.data))
+		.catch(error => console.log(error));
+};
+
+const updateProjectTotalTime = (projectName, totalTime) => {
+	axios
+		.get(`${projectsUrl}.json?orderBy="name"&equalTo="${projectName}"&print=pretty`)
+		.then(response => {
+			const fetchedTask = Object.keys(response.data);
+			const resValues = Object.values(response.data);
+			const id = fetchedTask[0];
+			const projectsTotalTime = resValues[0].totalTime;
+
+			const updatedTotalTime = totalProjectTimeCalc(projectsTotalTime, totalTime);
+			console.log({ updatedTotalTime });
+			doUpdate(updatedTotalTime, id);
+		})
+		.catch(error => console.log(error));
+};
+
 export const createNewTask = newTask => {
 	return dispatch => {
 		dispatch(saveNewTaskStart());
 		axios
 			.post('/tasks.json', newTask)
 			.then(response => {
+				updateProjectTotalTime(newTask.project, newTask.totalTime);
 				dispatch(saveNewTaskSuccess(response.data.name, newTask));
 			})
 			.catch(error => dispatch(saveNewTaskFailed(error)));

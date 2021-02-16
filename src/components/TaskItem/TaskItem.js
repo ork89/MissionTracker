@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 		'&:hover': {
 			borderBottom: 'none',
 		},
-		
+
 		marginTop: '8px',
 		minWidth: '150px',
 		maxWidth: '200px',
@@ -59,30 +59,6 @@ const TaskItem = props => {
 	const [inputSelectedValue, setInputSelectedValue] = useState(priority);
 
 	const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
-
-	const padWithZero = time => {
-		return time.length < 2 ? time.padStart(2, '0').toString() : '';
-	};
-
-	const getTimeDifference = useCallback((startFullDate, endFullDate) => {
-		const durationInHours = endFullDate.diff(startFullDate, 'hours');
-		const durationInMinutes = endFullDate.diff(startFullDate, 'minutes') % 60;
-		const durationInSeconds = endFullDate.diff(startFullDate, 'seconds') % 60;
-
-		const totalTimeArr = [durationInHours, durationInMinutes, durationInSeconds];
-		totalTimeArr.map(item => {
-			return padWithZero(item.toString());
-		});
-
-		setTotalTime(totalTimeArr.join(':'));
-	}, []);
-
-	useEffect(() => {
-		const startFullDate = moment(new Date(date.toString().replace('00:00:00', startTime)));
-		const endFullDate = moment(new Date(date.toString().replace('00:00:00', endTime)));
-
-		getTimeDifference(startFullDate, endFullDate);
-	}, [date, startTime, endTime, getTimeDifference]);
 
 	const handleClick = event => {
 		setAnchorEl(event.currentTarget);
