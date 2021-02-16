@@ -28,6 +28,7 @@ const saveNewProjectStart = (state, action) => {
 		loading: true,
 	});
 };
+
 const saveNewProjectSuccess = (state, action) => {
 	const newProject = updateObject(action.newProject, { id: action.id });
 	return updateObject(state, {
@@ -35,6 +36,7 @@ const saveNewProjectSuccess = (state, action) => {
 		projects: state.projects.concat(newProject),
 	});
 };
+
 const saveNewProjectFailed = (state, action) => {
 	return updateObject(state, { loading: false });
 };

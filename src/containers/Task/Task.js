@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormControl, Select, TextField } from '@material-ui/core';
@@ -7,6 +7,7 @@ import Timer from '../../components/Timer/Timer';
 import TimerControls from '../../components/Timer/TimerControls/TimerControls';
 import ProjectDialog from '../../components/UI/Dialog/ProjectDialog';
 import { fetchTasksList, createNewTask } from '../../store/actions/trackerActions';
+import { fetchProjects } from '../../store/actions/projectsActions';
 import classes from './Task.module.css';
 
 const useStyles = makeStyles(() => ({
@@ -32,14 +33,21 @@ const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
 const Task = () => {
 	const styles = useStyles();
+	const fetchedProjects = useSelector(state => state.projects.projects);
 	const [secondsElapsed, setSecondsElapsed] = useState(0);
 	const [isStarted, setIsStarted] = useState(false);
 	const [startTime, setStartTime] = useState('00:00:00');
 	const [description, setDescription] = useState('');
-	// TODO: get a list of projects from the DB and instantiate 'selectedProjectName' with the first one.
-	const [selectedProjectName, setSelectedProjectName] = useState('MissionTracker');
 	const [inputSelectedValue, setInputSelectedValue] = useState(priorities[1]);
+	const [selectedProjectName, setSelectedProjectName] = useState('');
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(fetchProjects());
+		if (fetchedProjects.length > 0) {
+			setSelectedProjectName(fetchedProjects[0].name);
+		}
+	}, []);
 
 	const getSeconds = () => {
 		return `0${Math.floor(secondsElapsed % 60)}`.slice(-2);
@@ -137,7 +145,7 @@ const Task = () => {
 				/>
 			</FormControl>
 
-			{/* ---Project selection dialog--- */}
+			{/* ---Priority selection dialog--- */}
 			<div className={classes.projectAndPriority}>
 				<FormControl>
 					<Select
@@ -154,7 +162,10 @@ const Task = () => {
 						})}
 					</Select>
 				</FormControl>
+
+				{/* ---Project selection dialog--- */}
 				<ProjectDialog
+					projects={fetchedProjects}
 					selectedProject={handleProjectSelected}
 					defaultValue={selectedProjectName}
 				/>

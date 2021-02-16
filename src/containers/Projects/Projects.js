@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 const Projects = () => {
 	const styles = useStyles();
 	const fetchedProjects = useSelector(state => state.projects.projects);
+	const fetchedTasks = useSelector(state => state.tasks.tasks);
 	const isLoading = useSelector(state => state.projects.loading);
 	const [projectsList, setProjectsList] = useState(fetchedProjects);
 	const dispatch = useDispatch();

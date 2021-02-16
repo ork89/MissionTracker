@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -38,38 +40,15 @@ const useStyles = makeStyles(theme => ({
 
 const FormDialog = props => {
 	const [open, setOpen] = useState(false);
-	const { dialogTitle, variant, color, btnOpenLabel } = props;
+	const { dialogTitle, variant, color, btnOpenLabel, projects, defaultValue } = props;
 	const [selectedIndex, setSelectedIndex] = useState(0);
-	const [projects, setProjects] = useState([
-		{
-			id: 1,
-			name: 'MissionTracker',
-			totalTime: '04:58:45',
-			client: 'Ori M. K.',
-			status: 'inprogress',
-		},
-		{
-			id: 2,
-			name: 'IncoMaster',
-			totalTime: '76:12:19',
-			client: 'Ori M. K.',
-			status: 'Done',
-		},
-
-		{
-			id: 3,
-			name: 'Portfolio',
-			totalTime: '00:38:41',
-			client: 'Ori M. K.',
-			status: 'inprogress',
-		},
-	]);
 
 	const handleClose = () => {
 		setOpen(false);
 	};
 
 	const handleSelect = () => {
+		if (projects.length > 0) props.selectedProject(projects[selectedIndex].name);
 		setOpen(false);
 	};
 
@@ -79,7 +58,6 @@ const FormDialog = props => {
 
 	const handleListItemClick = id => {
 		setSelectedIndex(id);
-		props.selectedProject(projects[id].name);
 	};
 
 	const classes = useStyles();
@@ -91,7 +69,7 @@ const FormDialog = props => {
 					<FolderOpenIcon />
 					{btnOpenLabel}
 				</IconButton>
-				<h5>{projects[selectedIndex].name}</h5>
+				<h5>{projects.length > 0 && projects[selectedIndex].name}</h5>
 			</div>
 			<Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
 				<DialogTitle id='form-dialog-title'>{dialogTitle}</DialogTitle>
@@ -106,7 +84,7 @@ const FormDialog = props => {
 									<ListItem
 										key={proj.id}
 										button
-										defaultValue={props.defaultValue}
+										defaultValue={defaultValue}
 										selected={selectedIndex === index}
 										onClick={event => handleListItemClick(index)}>
 										<ListItemIcon>
