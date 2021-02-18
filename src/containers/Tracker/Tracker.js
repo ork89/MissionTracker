@@ -8,16 +8,17 @@ import { fetchTasksList, deleteTask } from '../../store/actions/trackerActions';
 import classes from './Tracker.module.css';
 
 const Tracker = () => {
+	const token = useSelector(state => state.auth.token)
 	const fetchedTasks = useSelector(state => state.tasks.tasks);
 	const isLoading = useSelector(state => state.tasks.loading);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(fetchTasksList());
+		dispatch(fetchTasksList(token));
 	}, []);
 
 	const handleDelete = id => {
-		dispatch(deleteTask(id));
+		dispatch(deleteTask(id, token));
 	};
 
 	let tasks = <Spinner />;

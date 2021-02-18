@@ -67,11 +67,11 @@ const url = 'https://mission-time-tracker-default-rtdb.europe-west1.firebasedata
 const projectsUrl =
 	'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/projects';
 
-export const fetchTasksList = () => {
+export const fetchTasksList = token => {
 	return dispatch => {
 		dispatch(fetchTasksStart());
 		axios
-			.get(`${url}.json`)
+			.get(`${url}.json?auth=${token}`)
 			.then(response => {
 				const fetchedTasks = [];
 				const fetchedTasksObject = Object.entries(response.data);
@@ -83,16 +83,18 @@ export const fetchTasksList = () => {
 	};
 };
 
-const doUpdate = (updatedTotalTime, id) => {
+const doUpdate = (updatedTotalTime, id, token) => {
 	axios
-		.patch(`${projectsUrl}/${id}.json`, { totalTime: updatedTotalTime })
+		.patch(`${projectsUrl}/${id}.json?auth=${token}`, { totalTime: updatedTotalTime })
 		.then(res => console.log(res.data))
 		.catch(error => console.log(error));
 };
 
-const updateProjectTotalTime = (projectName, totalTime) => {
+const updateProjectTotalTime = (projectName, totalTime, token) => {
+	const queryParams = `?auth=${token}&orderBy="name"&equalTo=${projectName}"&print=pretty`;
 	axios
-		.get(`${projectsUrl}.json?orderBy="name"&equalTo="${projectName}"&print=pretty`)
+		// .get(`${projectsUrl}.json?orderBy="name"&equalTo="${projectName}"&print=pretty`)
+		.get(`${projectsUrl}.json${queryParams}`)
 		.then(response => {
 			const fetchedTask = Object.keys(response.data);
 			const resValues = Object.values(response.data);
@@ -101,29 +103,29 @@ const updateProjectTotalTime = (projectName, totalTime) => {
 
 			const updatedTotalTime = totalProjectTimeCalc(projectsTotalTime, totalTime);
 			console.log({ updatedTotalTime });
-			doUpdate(updatedTotalTime, id);
+			doUpdate(updatedTotalTime, id, token);
 		})
 		.catch(error => console.log(error));
 };
 
-export const createNewTask = newTask => {
+export const createNewTask = (newTask, token) => {
 	return dispatch => {
 		dispatch(saveNewTaskStart());
 		axios
-			.post('/tasks.json', newTask)
+			.post(`/tasks.json?auth=${token}`, newTask)
 			.then(response => {
-				updateProjectTotalTime(newTask.project, newTask.totalTime);
+				updateProjectTotalTime(newTask.project, newTask.totalTime, token);
 				dispatch(saveNewTaskSuccess(response.data.name, newTask));
 			})
 			.catch(error => dispatch(saveNewTaskFailed(error)));
 	};
 };
 
-export const deleteTask = id => {
+export const deleteTask = (id, token) => {
 	return dispatch => {
 		dispatch(deleteTaskStart());
 		axios
-			.delete(`${url}/${id}.json`)
+			.delete(`${url}/${id}.json?auth=${token}`)
 			.then(response => {
 				dispatch(deleteTaskSuccess(id));
 			})

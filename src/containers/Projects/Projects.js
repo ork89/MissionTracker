@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 const Projects = () => {
 	const styles = useStyles();
+	const token = useSelector(state => state.auth.token);
 	const fetchedProjects = useSelector(state => state.projects.projects);
 	const fetchedTasks = useSelector(state => state.tasks.tasks);
 	const isLoading = useSelector(state => state.projects.loading);
@@ -39,12 +40,12 @@ const Projects = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(fetchProjects());
+		dispatch(fetchProjects(token));
 		setProjectsList(fetchedProjects);
 	}, []);
 
 	const handleCreateProject = (projectName, clientName) => {
-		dispatch(saveProjectInDB(projectName, clientName));
+		dispatch(saveProjectInDB(projectName, clientName, token));
 	};
 
 	const handleDelete = id => {

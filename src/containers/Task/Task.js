@@ -33,6 +33,7 @@ const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
 const Task = () => {
 	const styles = useStyles();
+	const token = useSelector(state => state.projects.token);
 	const fetchedProjects = useSelector(state => state.projects.projects);
 	const [secondsElapsed, setSecondsElapsed] = useState(0);
 	const [isStarted, setIsStarted] = useState(false);
@@ -43,7 +44,7 @@ const Task = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(fetchProjects());
+		dispatch(fetchProjects(token));
 		if (fetchedProjects.length > 0) {
 			setSelectedProjectName(fetchedProjects[0].name);
 		}
@@ -78,8 +79,8 @@ const Task = () => {
 			},
 		};
 
-		dispatch(createNewTask(newTask));
-		dispatch(fetchTasksList());
+		dispatch(createNewTask(newTask, token));
+		dispatch(fetchTasksList(token));
 	};
 
 	const timerStartedHandler = () => {

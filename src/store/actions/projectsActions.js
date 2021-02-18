@@ -42,13 +42,11 @@ export const fetchProjectsFailed = error => {
 	};
 };
 
-export const fetchProjects = () => {
+export const fetchProjects = token => {
 	return dispatch => {
 		dispatch(fetchProjectsStart());
 		axios
-			.get(
-				'https://mission-time-tracker-default-rtdb.europe-west1.firebasedatabase.app/projects.json'
-			)
+			.get(`projects.json?auth=${token}`)
 			.then(response => {
 				const fetchedProjects = [];
 				const fetchedProjectsObj = Object.entries(response.data);
@@ -60,7 +58,7 @@ export const fetchProjects = () => {
 	};
 };
 
-export const saveProjectInDB = (projectName, clientName) => {
+export const saveProjectInDB = (projectName, clientName, token) => {
 	const newProject = {
 		name: projectName,
 		totalTime: '00:00:00',
@@ -71,7 +69,7 @@ export const saveProjectInDB = (projectName, clientName) => {
 	return dispatch => {
 		dispatch(createNewProjectStart());
 		axios
-			.post('/projects.json', newProject)
+			.post(`/projects.json?auth=${token}`, newProject)
 			.then(response => {
 				dispatch(saveNewProjectSuccess(response.data.name, newProject));
 			})

@@ -1,6 +1,8 @@
-export const START_TIMER = 'START_TIMER';
-export const PAUSE_TIMER = 'PAUSE_TIMER';
-export const STOP_TIMER = 'STOP_TIMER';
+export const AUTH_START = 'AUTH_START';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';
+
+export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 
 export const FETCH_TASKS_START = 'FETCH_TASKS_START';
 export const FETCH_TASKS_SUCCESS = 'FETCH_TASKS_SUCCESS';
