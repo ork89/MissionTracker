@@ -84,6 +84,7 @@ export const fetchTasksList = token => {
 };
 
 const doUpdate = (updatedTotalTime, id, token) => {
+	console.log({ token });
 	axios
 		.patch(`${projectsUrl}/${id}.json?auth=${token}`, { totalTime: updatedTotalTime })
 		.then(res => console.log(res.data))
@@ -92,6 +93,7 @@ const doUpdate = (updatedTotalTime, id, token) => {
 
 const updateProjectTotalTime = (projectName, totalTime, token) => {
 	const queryParams = `?auth=${token}&orderBy="name"&equalTo=${projectName}"&print=pretty`;
+	console.log({ token });
 	axios
 		// .get(`${projectsUrl}.json?orderBy="name"&equalTo="${projectName}"&print=pretty`)
 		.get(`${projectsUrl}.json${queryParams}`)
@@ -110,6 +112,7 @@ const updateProjectTotalTime = (projectName, totalTime, token) => {
 
 export const createNewTask = (newTask, token) => {
 	return dispatch => {
+		console.log({ token });
 		dispatch(saveNewTaskStart());
 		axios
 			.post(`/tasks.json?auth=${token}`, newTask)

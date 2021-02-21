@@ -33,7 +33,7 @@ const priorities = ['Non Issue', 'Low', 'Medium', 'High'];
 
 const Task = () => {
 	const styles = useStyles();
-	const token = useSelector(state => state.projects.token);
+	const token = useSelector(state => state.auth.token);
 	const fetchedProjects = useSelector(state => state.projects.projects);
 	const [secondsElapsed, setSecondsElapsed] = useState(0);
 	const [isStarted, setIsStarted] = useState(false);
