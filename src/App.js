@@ -1,38 +1,63 @@
-import React, { Suspense, useContext } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Layout from './hoc/Layout/Layout';
-import Login from './containers/Authentication/Login';
-import Signup from './containers/Authentication/Signup';
+import WelcomeScreen from './containers/Welcome/WelcomeScreen';
+
 import AuthContextProvider from './authContext';
+import * as actions from './store/actions/index';
 
 import './App.css';
 
-const tracker = React.lazy(() => {
+const Tracker = React.lazy(() => {
 	return import('./containers/Tracker/Tracker');
 });
 
-const projects = React.lazy(() => {
+const Projects = React.lazy(() => {
 	return import('./containers/Projects/Projects');
 });
 
-const reports = React.lazy(() => {
+const Reports = React.lazy(() => {
 	return import('./containers/Reports/Reports');
 });
 
-const App = () => {
+const Login = React.lazy(() => {
+	return import('./containers/Authentication/Login');
+});
+
+const Signup = React.lazy(() => {
+	return import('./containers/Authentication/Signup');
+});
+
+const App = props => {
 	const isLoggedIn = useSelector(state => state.auth.token);
-	const routes = (
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(actions.authCheckState());
+	}, []);
+
+	let routes = (
 		<Switch>
-			{/* <Route path='/' exact component={tracker} /> */}
-			<Route path='/login' exact component={Login} />
-			<Route path='/' exact component={tracker} />
+			<Route path='/' exact component={WelcomeScreen} />
+			<Route path='/login' component={Login} />
 			<Route path='/signup' component={Signup} />
-			<Route path='/projects' component={projects} />
-			<Route path='/reports' component={reports} />
 			<Redirect to='/' />
 		</Switch>
 	);
+
+	if (isLoggedIn)
+		routes = (
+			<Switch>
+				<Route path='/tracker' component={Tracker} />
+				<Route path='/signup' component={Signup} />
+				<Route path='/projects' component={Projects} />
+				<Route path='/reports' component={Reports} />
+				<Route path='/login' component={Login} />
+				<Route path='/' exact component={WelcomeScreen} />
+				<Redirect to='/' />
+			</Switch>
+		);
 
 	return (
 		<div className='App'>
