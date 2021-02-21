@@ -6,7 +6,7 @@ import classes from './NavigationItems.module.css';
 const NavigationItems = props => {
 	return (
 		<ul className={classes.NavigationItems}>
-			<NavigationItem exact link='/'>
+			<NavigationItem exact link='/tracker'>
 				Tracker
 			</NavigationItem>
 			<NavigationItem link='/Projects'>Projects</NavigationItem>
