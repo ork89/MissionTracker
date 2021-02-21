@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Redirect, useHistory } from 'react-router-dom';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -82,12 +84,15 @@ export default function Login() {
 	const dispatch = useDispatch();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const isLoggedIn = useSelector(state => state.auth.token);
 	const isLoading = useSelector(state => state.auth.loading);
 	const errorMsg = useSelector(state => state.auth.error);
+	const history = useHistory();
 
 	const handleOnSubmit = event => {
 		event.preventDefault();
 		dispatch(actions.auth(email, password, false));
+		if (isLoggedIn !== null) history.push('/tracker');
 	};
 
 	let errors = null;
@@ -163,13 +168,18 @@ export default function Login() {
 		</form>
 	);
 
+	let authRedirect = null;
+	// console.log({ isLoggedIn });
+	if (isLoggedIn !== null) authRedirect = <Redirect exact to='/tracker' />;
+
 	if (isLoading) form = <Spinner />;
 
 	return (
 		<Grid container component='main' className={classes.root}>
+			{authRedirect}
 			<CssBaseline />
 			<Grid item xs={false} sm={4} md={7} className={classes.image}>
-				<span className={classes.imgAttr}>
+				<Typography variant='caption' className={classes.imgAttr}>
 					Photo by{' '}
 					<a href='https://unsplash.com/@stilclassics?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText'>
 						STIL
@@ -178,7 +188,7 @@ export default function Login() {
 					<a href='https://unsplash.com/s/photos/time?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText'>
 						Unsplash
 					</a>
-				</span>
+				</Typography>
 			</Grid>
 			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 				<div className={classes.paper}>
