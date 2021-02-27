@@ -1,17 +1,20 @@
-.container:not(:first-child) {
+/* .container:not(:first-child) {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
 	width: 100%;
+} */
+
+.root {
+	flex-grow: 1;
+}
+
+.title {
+	flex-grow: 1;
 }
 
 .logoImage {
 	width: 300px;
-}
-
-.WelcomeImg {
-	width: 100%;
-	height: inherit;
 }
