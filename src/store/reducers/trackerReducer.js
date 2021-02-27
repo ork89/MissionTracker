@@ -50,7 +50,7 @@ const deleteTaskSuccess = (state, action) => {
 	return updateObject(state, { tasks: updatedTasksList, loading: false });
 };
 const deleteTaskFailed = (state, action) => {
-	return updateObject(state, { loading: true });
+	return updateObject(state, { loading: false });
 };
 
 const tasksReducer = (state = initialState, action) => {
