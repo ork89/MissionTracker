@@ -41,6 +41,25 @@ const saveNewProjectFailed = (state, action) => {
 	return updateObject(state, { loading: false });
 };
 
+const deleteProjectStart = (state, action) => {
+	return updateObject(state, { loading: true });
+};
+
+const deleteProjectSuccess = (state, action) => {
+	const updatedProjectsList = state.projects.filter((item, id) => {
+		return item.id !== action.id;
+	});
+
+	return updateObject(state, {
+		projects: updatedProjectsList,
+		loading: false,
+	});
+};
+
+const deleteProjectFailed = (state, action) => {
+	return updateObject(state, { loading: false });
+};
+
 const projectsReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case actionTypes.FETCH_PROJECTS_START:
@@ -55,6 +74,12 @@ const projectsReducer = (state = initialState, action) => {
 			return saveNewProjectSuccess(state, action);
 		case actionTypes.SAVE_NEW_PROJECT_FAILED:
 			return saveNewProjectFailed(state, action);
+		case actionTypes.DELETE_PROJECT_START:
+			return deleteProjectStart(state, action);
+		case actionTypes.DELETE_PROJECT_SUCCESS:
+			return deleteProjectSuccess(state, action);
+		case actionTypes.DELETE_PROJECT_FAILED:
+			return deleteProjectFailed(state, action);
 		default:
 			return state;
 	}

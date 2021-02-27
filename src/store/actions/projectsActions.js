@@ -42,6 +42,26 @@ export const fetchProjectsFailed = error => {
 	};
 };
 
+export const deleteProjectStart = () => {
+	return {
+		type: actionTypes.DELETE_PROJECT_START,
+	};
+};
+
+export const deleteProjectSuccess = id => {
+	return {
+		type: actionTypes.DELETE_PROJECT_SUCCESS,
+		id,
+	};
+};
+
+export const deleteProjectFailed = error => {
+	return {
+		type: actionTypes.DELETE_PROJECT_FAILED,
+		error,
+	};
+};
+
 export const fetchProjects = token => {
 	return dispatch => {
 		dispatch(fetchProjectsStart());
@@ -74,5 +94,21 @@ export const saveProjectInDB = (projectName, clientName, token) => {
 				dispatch(saveNewProjectSuccess(response.data.name, newProject));
 			})
 			.catch(error => dispatch(saveNewProjectFailed(error)));
+	};
+};
+
+export const deleteProject = (id, token) => {
+	return dispatch => {
+		dispatch(deleteProjectStart());
+		axios
+			.delete(`/projects/${id}.json?auth=${token}`)
+			.then(response => {
+				console.log(response.data);
+				dispatch(deleteProjectSuccess());
+			})
+			.catch(error => {
+				console.log(error);
+				dispatch(deleteProjectFailed());
+			});
 	};
 };
