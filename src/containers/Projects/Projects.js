@@ -14,7 +14,7 @@ import classes from './Projects.module.css';
 import FilterDialog from '../../components/UI/Dialog/FilterDialog';
 import TimeDialog from '../../components/UI/Dialog/TimeDialog';
 import filterByDuration from '../../helpers/DurationFilter';
-import { fetchProjects, saveProjectInDB } from '../../store/actions/projectsActions';
+import { fetchProjects, saveProjectInDB, deleteProject } from '../../store/actions/projectsActions';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 const useStyles = makeStyles(theme => ({
@@ -49,6 +49,7 @@ const Projects = () => {
 	};
 
 	const handleDelete = id => {
+		dispatch(deleteProject(id, token));
 		const newProjectsList = projectsList.filter(item => item.id !== id);
 		setProjectsList(newProjectsList);
 	};
